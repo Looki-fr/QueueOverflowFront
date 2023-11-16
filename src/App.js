@@ -1,27 +1,25 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import ProductList from "./components/ProductList";
-import AddProduct from "./components/AddProduct";
-import EditProduct from "./components/EditProduct";
 import QuestionList from "./components/QuestionList";
+import Navbar from "./components/Navbar";
+import { ChakraProvider } from '@chakra-ui/react'
+import {SideBar} from './components/Sidebar'
 /* <Route path="/" element={<ProductList/>}/>
 <Route path="/add" element={<AddProduct />}/>
 <Route path="/edit/:id" element={<EditProduct />}/> */
+
+
 function App() {
   return (
-    <div>
-      <Router>
-      <div>
-        <div>
-          <div>
-            <Routes>
-              <Route path="/" element={<QuestionList/>}/>
-            </Routes>
-          </div>
-        </div>
-      </div>
-      </Router>
-    </div>
+    <ChakraProvider>
+      <Navbar/>
+      <SideBar display={{md: 'unset' }} />
+        <Router>
+          <Routes>
+            <Route path="/" element={<QuestionList/>}/>
+          </Routes>
+        </Router>
+    </ChakraProvider>
   );
 }
- 
+
 export default App;
