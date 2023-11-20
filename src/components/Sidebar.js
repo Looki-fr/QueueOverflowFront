@@ -82,7 +82,9 @@ export function SideBar(props) {
             <Link to="/users">
               <NavItem icon={AiOutlineTeam}>Users</NavItem>
             </Link>
-            <NavItem icon={BsFolder2}>Exercises</NavItem>
+            <Link to="/exercise">
+              <NavItem icon={BsFolder2}>Exercises</NavItem>
+            </Link>
             <NavItem icon={BsCalendarCheck}>Your questions</NavItem>
           </Flex>
         </Box>

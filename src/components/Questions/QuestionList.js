@@ -2,9 +2,9 @@ import { useState, useEffect } from 'react'
 import axios from "axios";
 import { Link } from "react-router-dom";
 import Question from './Question';
-import { useWindowDimensions } from './getWindowDimensions'
-import {SideBar} from './Sidebar'
-import Navbar from "./Navbar";
+import { useWindowDimensions } from './../getWindowDimensions'
+import {SideBar} from './../Sidebar'
+import Navbar from "./../Navbar";
 
 function getWidth(width){
     if (width > 800){
@@ -32,7 +32,6 @@ function getWidth(width){
 
 const QuestionList = () => {
     const [questions, setQuestions] = useState([]);
-    
 
     useEffect(() => {
         getQuestions();
