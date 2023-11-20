@@ -3,6 +3,8 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import Question from './Question';
 import { useWindowDimensions } from './getWindowDimensions'
+import {SideBar} from './Sidebar'
+import Navbar from "./Navbar";
 
 function getWidth(width){
     if (width > 800){
@@ -60,39 +62,43 @@ const QuestionList = () => {
     const { height, width } = useWindowDimensions();
 
     return (
-      <div style={{
-        position: 'relative',
-        height: getHeight(height),
-        marginLeft: getLeft(width),
-        width: getWidth(width),
-        marginTop: "80px",
-        alignItems:'center',
-        justifyContent:'center',
-      }}>
-        <h1 style={{
-          fontSize: '40px',
-          marginTop:'130px',
-          marginLeft:'10px',
-          marginBottom: '25px',
-        }}>
-          Questions list
-        </h1>
+      <div>
+        <Navbar/>
+        <SideBar display={{md: 'unset' }} />
         <div style={{
-          marginLeft:'10px',
-          marginBottom: '50px',
-          border: '1px solid #777777',
-          borderRadius: '4px',
-          height:'1px',
-          width:'50%',
-        }}></div>
-        
-        {
-            questions.map((question) => (
-                <Question key={question.QuestionID} question={question.Title} description={question.Description} tag={question.Tag} user={question.user} date={question.Date} />
-            ))
-        }
+          position: 'relative',
+          height: getHeight(height),
+          marginLeft: getLeft(width),
+          width: getWidth(width),
+          marginTop: "80px",
+          alignItems:'center',
+          justifyContent:'center',
+        }}>
+          <h1 style={{
+            fontSize: '40px',
+            marginTop:'130px',
+            marginLeft:'10px',
+            marginBottom: '25px',
+          }}>
+            Questions list
+          </h1>
+          <div style={{
+            marginLeft:'10px',
+            marginBottom: '50px',
+            border: '1px solid #777777',
+            borderRadius: '4px',
+            height:'1px',
+            width:'50%',
+          }}></div>
+          
+          {
+              questions.map((question) => (
+                  <Question key={question.QuestionID} question={question.Title} description={question.Description} tag={question.Tag} user={question.user} date={question.Date} />
+              ))
+          }
 
+        </div>
       </div>
     )
 }
-export default QuestionList
+export default QuestionList;

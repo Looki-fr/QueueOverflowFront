@@ -4,7 +4,6 @@ import {
   Flex,
   Icon,
   Text,
-  Link,
   Image,
   Button,
   Heading,
@@ -28,6 +27,7 @@ import { BsFolder2, BsCalendarCheck } from 'react-icons/bs';
 import { FiMenu } from 'react-icons/fi';
 import { RiFlashlightFill } from 'react-icons/ri';
 import { useWindowDimensions } from './getWindowDimensions';
+import { Link } from "react-router-dom";
 
 function getWidth(width){
   if (width > 800){
@@ -76,8 +76,12 @@ export function SideBar(props) {
             color="gray.600"
             aria-label="Main Navigation"
           >
-            <NavItem icon={AiOutlineHome}>Questions</NavItem>
-            <NavItem icon={AiOutlineTeam}>Users</NavItem>
+            <Link to="/">
+              <NavItem icon={AiOutlineHome}>Questions</NavItem>
+            </Link>
+            <Link to="/users">
+              <NavItem icon={AiOutlineTeam}>Users</NavItem>
+            </Link>
             <NavItem icon={BsFolder2}>Exercises</NavItem>
             <NavItem icon={BsCalendarCheck}>Your questions</NavItem>
           </Flex>
