@@ -19,8 +19,6 @@ import {
   } from '@chakra-ui/react';
   import React, { ReactNode } from 'react';
   
-
-  
   const IconButton = () => {
     return (
       <Button
@@ -35,7 +33,21 @@ import {
     );
   };
   
-  const Navbar = () => {
+  const Navbar = (props) => {
+    var getQuestions=null;
+    if (props.getQuestions) {
+      getQuestions = props.getQuestions;
+    }
+    const [searchValue, setSearchValue] = React.useState('');
+
+    function handleSearch(key) {
+      if (key.keyCode === 13) {
+        if (getQuestions!=null){
+          getQuestions(searchValue);
+        }
+      }
+    }  
+
     return (
       <Box
         py="2"
@@ -66,6 +78,9 @@ import {
               borderColor={useColorModeValue('gray.300', 'white')}
               borderRadius="5px"
               d={{ base: 'none', md: 'block' }}
+              value={searchValue}
+              onChange={(e) => setSearchValue(e.target.value)}
+              onKeyDown={(e) => {handleSearch(e)}}
             />
             <div>
               <Image

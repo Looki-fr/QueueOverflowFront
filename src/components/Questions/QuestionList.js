@@ -34,19 +34,30 @@ const QuestionList = () => {
     const [questions, setQuestions] = useState([]);
 
     useEffect(() => {
-        getQuestions();
+        getQuestions("");
     }, []);
 
-    const getQuestions = async () => {
-        const response = await axios.get('http://localhost:5000/queueoverflow/questions');
-        let lst = [];
-        for (let i = 0; i < response.data.length; i++){
-            const addInfo = await getQuestionAnswerById(response.data[i].QuestionAnswerID);
-            const user = await getUserById(addInfo.UserID);
-            lst.push({ ...response.data[i], Date : addInfo.Date, UserAnswering : addInfo.UserID, user : user.Username})
+    const completeQuestion = async (response) => {
+      let lst = [];
+      for (let i = 0; i < response.data.length; i++){
+          const addInfo = await getQuestionAnswerById(response.data[i].QuestionAnswerID);
+          const user = await getUserById(addInfo.UserID);
+          lst.push({ ...response.data[i], Date : addInfo.Date, UserAnswering : addInfo.UserID, user : user.Username})
+      }
+      setQuestions(lst);
+    }
+
+    const getQuestions = async (description) => {
+        if (description==="") {
+          const response = await axios.get('http://localhost:5000/queueoverflow/questions');
+          completeQuestion(response);
         }
-        setQuestions(lst);
-        console.log(lst)
+        else {
+          const response = await axios.get(`http://localhost:5000/queueoverflow/questions/search/${description}`);
+          console.log(response);
+          completeQuestion(response);
+        }
+          
     }
 
     const getQuestionAnswerById = async (id) => {
@@ -62,7 +73,7 @@ const QuestionList = () => {
 
     return (
       <div>
-        <Navbar/>
+        <Navbar getQuestions={getQuestions}/>
         <SideBar display={{md: 'unset' }} />
         <div style={{
           position: 'relative',
