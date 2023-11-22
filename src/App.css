@@ -64,7 +64,7 @@
 .questionTagDiv p{
   margin-left: 10px;
   padding: 0;
-  font-size: 16px;
+  font-size: 20px;
 }
 
 .tag{
@@ -81,8 +81,9 @@
   border: 1px solid black;
   border-radius: 5px;
   padding: 10px;
+  width: 100%;
   margin: 10px;
-  width: 90%;
+  margin-top: 30px;
 }
 
 .divSide{

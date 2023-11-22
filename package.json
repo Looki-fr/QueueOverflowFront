@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@chakra-ui/react": "^2.8.2",
+    "@coreui/react": "^4.11.0",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@testing-library/jest-dom": "^5.17.0",
@@ -11,14 +12,18 @@
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.6.0",
     "bulma": "^0.9.4",
+    "flowbite-react": "^0.6.4",
     "framer-motion": "^10.16.4",
+    "primereact": "^10.1.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-dropdown": "^1.11.0",
     "react-native": "^0.72.6",
     "react-pro-sidebar": "^1.1.0-alpha.1",
     "react-router-dom": "^6.18.0",
     "react-scripts": "5.0.1",
     "react-scroll": "^1.9.0",
+    "styled-components": "^6.1.1",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

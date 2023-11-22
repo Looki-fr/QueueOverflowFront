@@ -5,26 +5,7 @@ import Question from './Question';
 import { useWindowDimensions } from './../getWindowDimensions'
 import {SideBar} from './../Sidebar'
 import Navbar from "./../Navbar";
-
-function getWidth(width){
-    if (width > 800){
-      return "75%"
-    }
-    else{
-      return `${width-150}px`
-    }
-  
-  }
-  
-  function getLeft(width){
-    if (width > 800){
-      return "25%"
-    }
-    else{
-      return "150px"
-    }
-  
-  }
+import { Input, useColorModeValue } from '@chakra-ui/react';
 
   function getHeight(height){
     return height-72;
@@ -71,36 +52,41 @@ const QuestionList = () => {
     }
     const { height, width } = useWindowDimensions();
 
+    const [searchValue, setSearchValue] = useState('');
+
+    function handleSearch(key) {
+      if (key.keyCode === 13) {
+        if (getQuestions!=null){
+          getQuestions(searchValue);
+        }
+      }
+    }  
+
     return (
       <div>
         <Navbar getQuestions={getQuestions}/>
-        <SideBar display={{md: 'unset' }} />
         <div style={{
           position: 'relative',
           height: getHeight(height),
-          marginLeft: getLeft(width),
-          width: getWidth(width),
+          width: "80%",
           marginTop: "80px",
           alignItems:'center',
           justifyContent:'center',
+          marginLeft: "10%",
+          marginRight: "10%",
         }}>
-          <h1 style={{
-            fontSize: '40px',
-            marginTop:'130px',
-            marginLeft:'10px',
-            marginBottom: '25px',
-          }}>
-            Questions list
-          </h1>
-          <div style={{
-            marginLeft:'10px',
-            marginBottom: '50px',
-            border: '1px solid #777777',
-            borderRadius: '4px',
-            height:'1px',
-            width:'50%',
-          }}></div>
-          
+            <Input
+              margin={"10px"}
+              marginTop={"50px"}
+              height={"50px"}
+              maxW="100%"
+              placeholder="Search..."
+              borderColor={useColorModeValue('black.300', 'white')}
+              borderRadius="5px"
+              value={searchValue}
+              onChange={(e) => setSearchValue(e.target.value)}
+              onKeyDown={(e) => {handleSearch(e)}}
+            />
           {
               questions.map((question) => (
                   <Question key={question.QuestionID} question={question.Title} description={question.Description} tag={question.Tag} user={question.user} date={question.Date} />

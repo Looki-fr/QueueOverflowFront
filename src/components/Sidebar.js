@@ -69,24 +69,6 @@ export function SideBar(props) {
               Queue Overflow
             </Text>
           </Flex>
-          <Flex
-            direction="column"
-            as="nav"
-            fontSize="md"
-            color="gray.600"
-            aria-label="Main Navigation"
-          >
-            <Link to="/">
-              <NavItem icon={AiOutlineHome}>Questions</NavItem>
-            </Link>
-            <Link to="/users">
-              <NavItem icon={AiOutlineTeam}>Users</NavItem>
-            </Link>
-            <Link to="/exercise">
-              <NavItem icon={BsFolder2}>Exercises</NavItem>
-            </Link>
-            <NavItem icon={BsCalendarCheck}>Your questions</NavItem>
-          </Flex>
         </Box>
 
         <Flex px="4" py="5" mt={10} justify="center" alignItems="center">
