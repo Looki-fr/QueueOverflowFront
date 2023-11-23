@@ -8,23 +8,18 @@ import Navbar from "./../Navbar";
 import { Input, useColorModeValue, Image, Button, Text, Icon } from '@chakra-ui/react';
 import { FaArrowDownShortWide } from "react-icons/fa6";
 import { FaArrowDownWideShort } from "react-icons/fa6";
+import { BsSearch } from "react-icons/bs";
 
 function getHeight(height){
   return height-72;
 }
-{/* <Image
-                alt="inverse filter"
-                w={'auto'}
-                h={4}
-                src={require("../../assets/double_arrow.png")}
-                cursor={"pointer"}
-              /> */}
+
 const QuestionList = () => {
     const [questions, setQuestions] = useState([]);
     const [searchValue, setSearchValue] = useState('');
     const [loaded, setLoaded] = useState(false);
     const [selectedFilter, setSelectedFilter] = useState("Dates");
-    const [order, setOrder] = useState("Descending");
+    const [order, setOrder] = useState("Ascending");
 
     useEffect(() => {
         // get parameter from url
@@ -82,7 +77,7 @@ const QuestionList = () => {
     function sortQuestions() {
       if (selectedFilter === "Dates") {
         const lst = questions.splice(0)
-        if (order === "Descending") {
+        if (order === "Ascending") {
           lst.sort(function (a, b) { 
             return new Date(b.Date) - new Date(a.Date);
           })
@@ -95,7 +90,7 @@ const QuestionList = () => {
 
       } else if (selectedFilter === "Tags") {
         const lst = questions.splice(0)
-        if (order === "Descending") {
+        if (order === "Ascending") {
           lst.sort(function (a, b) {
             return a.Tag.localeCompare(b.Tag);
           })
@@ -144,6 +139,17 @@ const QuestionList = () => {
               marginBottom={"0px"}
               zIndex={"0"}
             />
+            <div onClick={() => getQuestions(searchValue)} style={{
+              marginRight:"30px",
+              paddingTop:"5px",
+            }}>
+              <Icon
+                as={BsSearch}
+                cursor="pointer"
+                w={"30px"}
+                h={"30px"}
+              />
+            </div>
             <Button 
                 margin={"0px"} 
                 alignSelf={"center"} 
@@ -178,20 +184,10 @@ const QuestionList = () => {
                 fontWeight={"500"}
               >Tags</Text>
             </div>
-            <div onClick={() => setOrder("Descending")} 
-              style={{
-                paddingTop:"5px",
-                marginRight:"30px"
-              }}>
-              <Icon 
-                as={FaArrowDownWideShort} 
-                cursor="pointer"
-                color={order==="Descending" ? "black" : "grey"}
-              />
-            </div>
             <div onClick={() => setOrder("Ascending")} 
               style={{
                 paddingTop:"5px",
+                marginRight:"30px"
               }}>
                 <Icon 
                   as={FaArrowDownShortWide} 
@@ -199,6 +195,18 @@ const QuestionList = () => {
                   color={order==="Ascending" ? "black" : "grey"}
                 />
             </div>
+            <div onClick={() => setOrder("Descending")} 
+              style={{
+                paddingTop:"5px",
+               
+              }}>
+              <Icon 
+                as={FaArrowDownWideShort} 
+                cursor="pointer"
+                color={order==="Descending" ? "black" : "grey"}
+              />
+            </div>
+
           </div>
           {
               questions.map((question) => (
