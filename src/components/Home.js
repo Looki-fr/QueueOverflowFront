@@ -20,13 +20,15 @@ const Home = () => {
 
     function handleSearch(key) {
         if (key.keyCode === 13) {
-            // navigate to /questions with searchValue as query parameter
-            navigate(`/questions?search=${searchValue}`)
+            if (selectedOption === "Questions") {
+                navigate(`/questions?search=${searchValue}`)
+            } else if (selectedOption === "Users") {
+                navigate(`/users?search=${searchValue}`)
+            } else if (selectedOption === "Exercises") {
+                navigate(`/exercise?search=${searchValue}`)
+            }
         }
     }    
-
-    const searchTypes = ["questions", "users", "exercise"];
-    const [searchType, setSearchType] = useState(searchTypes[0]);
 
     const { height, width } = useWindowDimensions();
 
@@ -38,7 +40,6 @@ const Home = () => {
     const onOptionClicked = value => () => {
         setSelectedOption(value);
         setIsOpen(false);
-        console.log(selectedOption);
     };
 
     return (
@@ -61,6 +62,9 @@ const Home = () => {
                         fontWeight: "630",
                         textAlign: "center",
                         marginBottom: "30px",
+                        marginLeft:"0px",
+                        marginRight:"0px",
+                        marginTop:"0px",
                     
                     }}>
                         Queue Overflow

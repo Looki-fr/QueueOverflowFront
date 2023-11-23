@@ -80,20 +80,22 @@ const Navbar = (props) => {
       top="0"
       bg={useColorModeValue('white', 'white')}
       width="100%"
-      zIndex="1"
+      zIndex="666"
     >
       <Container maxW="1280px" px={4} mx="auto" mt={2} mb={2}>
         <HStack spacing={4}>
-          <Image
-            alt="Queue Overflow logo"
-            w={'auto'}
-            h={14}
-            src={require("../assets/logo.png")}
-            position={'absolute'}
-            top={'2'}
-            left={'0'}
-            ml={'4'}           
-          />
+          <Link to="/">
+            <Image
+              alt="Queue Overflow logo"
+              w={'auto'}
+              h={14}
+              src={require("../assets/logo.png")}
+              position={'absolute'}
+              top={'2'}
+              left={'0'}
+              ml={'4'}           
+            />
+          </Link>
           <Spacer />
           <Flex
             direction="row"
@@ -102,7 +104,7 @@ const Navbar = (props) => {
             color="gray.600"
             aria-label="Main Navigation"
           >
-            <Link to="/">
+            <Link to="/questions">
               <NavItem icon={AiOutlineHome}>Questions</NavItem>
             </Link>
             <Link to="/users">
