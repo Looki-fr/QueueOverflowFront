@@ -3,7 +3,6 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import Question from './Question';
 import { useWindowDimensions } from './../getWindowDimensions'
-import {SideBar} from './../Sidebar'
 import Navbar from "./../Navbar";
 import { Input, useColorModeValue, Image, Button, Text, Icon } from '@chakra-ui/react';
 import { FaArrowDownShortWide } from "react-icons/fa6";
@@ -79,11 +78,11 @@ const QuestionList = () => {
         const lst = questions.splice(0)
         if (order === "Ascending") {
           lst.sort(function (a, b) { 
-            return new Date(b.Date) - new Date(a.Date);
+            return new Date(a.Date) - new Date(b.Date);
           })
         } else {
           lst.sort(function (a, b) { 
-            return new Date(a.Date) - new Date(b.Date);
+            return  new Date(b.Date) - new Date(a.Date);
           })
         }
         setQuestions(lst)
@@ -105,7 +104,7 @@ const QuestionList = () => {
 
     return (
       <div>
-        <Navbar getQuestions={getQuestions}/>
+        <Navbar/>
         <div style={{
           position: 'relative',
           height: getHeight(height),
@@ -210,8 +209,15 @@ const QuestionList = () => {
           </div>
           {
               questions.map((question) => (
-                  <Question key={question.QuestionID} question={question.Title} description={question.Description} tag={question.Tag} user={question.user} date={question.Date} />
+                  <Question key={question.QuestionID} id={question.QuestionID} question={question.Title} description={question.Description} tag={question.Tag} user={question.user} date={question.Date} />
               ))
+          }
+          {
+            questions.length !== 0 && loaded && (
+              <div style={{
+                height: "100px",
+              }}/>
+            )
           }
           {
             questions.length === 0 && loaded && (

@@ -4,6 +4,7 @@ import ExerciseList from "./components/Exercise/ExerciseList";
 import Home from "./components/Home";
 import { ChakraProvider } from '@chakra-ui/react'
 import UserList from "./components/User/UserList";
+import QuestionFocus from "./components/Questions/QuestionFocus";
 /* <Route path="/" element={<ProductList/>}/>
 <Route path="/add" element={<AddProduct />}/>
 <Route path="/edit/:id" element={<EditProduct />}/> */
@@ -18,6 +19,7 @@ function App() {
           <Route path="/questions" element={<QuestionList/>}/>
           <Route path="/users" element={<UserList/>}/>
           <Route path="/exercise" element={<ExerciseList/>}/>
+          <Route path="/question" element={<QuestionFocus/>}/>
         </Routes>
       </Router>
     </ChakraProvider>

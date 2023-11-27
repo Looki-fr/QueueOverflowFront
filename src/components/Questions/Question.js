@@ -1,4 +1,6 @@
 import * as React from 'react';
+import { useState, useEffect } from 'react'
+
 import {
   Box,
   useColorModeValue,
@@ -14,13 +16,23 @@ import {
 import { BiGitRepoForked, BiStar } from 'react-icons/bi';
 import { FiGithub } from 'react-icons/fi';
 import { MdQuestionAnswer } from "react-icons/md";
+import { useNavigate } from "react-router-dom";
+
 const RepositoryCard = (props) => {
-  const { question, description, tag, user, date } = props;
+  const { id, question, description, tag, user, date } = props;
 
   const handleLinkClick = (e, link) => {
     window.open(link);
     e.stopPropagation();
   };
+
+  const navigate = useNavigate();
+  const [searchValue, setSearchValue] = useState('');
+
+  function gotoQuestionFocus() {
+
+    navigate(`/question?id=${id}`)
+  }    
 
   return (
     <Box
@@ -43,22 +55,34 @@ const RepositoryCard = (props) => {
             justifyContent="space-between"
             width="100%"
           >
-            <Tooltip hasArrow label="Click to see answers" placement="top">
-              <HStack cursor="pointer">
-                <Icon as={MdQuestionAnswer} boxSize="1.2em" mt="1px" />
-                <Text fontSize="30px" noOfLines={1} fontWeight="600" align="left">
-                  {question}
-                </Text>
-              </HStack>
-            </Tooltip>
+            <div onClick={() => gotoQuestionFocus()}>
+              <Tooltip hasArrow label="Click to see answers" placement="top">
+                <HStack cursor="pointer">
+                  <Icon as={MdQuestionAnswer} boxSize="1.2em" mt="1px" />
+                  <Text fontSize="30px" noOfLines={1} fontWeight="600" align="left">
+                    {question}
+                  </Text>
+                </HStack>
+              </Tooltip>
+            </div>
           </Flex>
           {tag && (
-            <Flex justifyContent="space-between" width="100%">
+            <Flex width="100%" flexDirection="row">
               <Box>
                 <HStack spacing="1">
                   <Tag size="sm" colorScheme="orange">
                     <Text fontSize={'1rem'}>{tag}</Text>
                   </Tag>
+                </HStack>
+              </Box>
+              <Box>
+                <HStack spacing="1" marginLeft="15px">
+                  <Text fontSize={'1rem'} fontWeight={"550"}>{date}</Text>
+                </HStack>
+              </Box>
+              <Box>
+                <HStack spacing="1" marginLeft="15px">
+                  <Text fontSize={'1rem'} fontWeight={"550"}>{user}</Text>
                 </HStack>
               </Box>
             </Flex>
