@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import axios from "axios";
 import Question from './Question';
+import BigQuestion from './BigQuestion';
 import Navbar from "./../Navbar";
 import { useWindowDimensions } from './../getWindowDimensions'
 
@@ -16,16 +17,14 @@ const QuestionFocus = (props) => {
         const queryString = window.location.search;
         const urlParams = new URLSearchParams(queryString);
         const id = urlParams.get('id')
-        console.log("ID: " + id)
         getQuestionById(id);
     }, []);
 
     const completeQuestion = async (q) => {
-        const addInfo = await getQuestionAnswerById(question.QuestionAnswerID);
+        const addInfo = await getQuestionAnswerById(q.QuestionAnswerID);
         const user = await getUserById(addInfo.UserID);
-        console.log(q, addInfo, user)
         setQuestion({ id:q.QuestionAnswerID,question:q.Title, description:q.Description,tag:q.Tag, date : addInfo.Date, user : user.Username})
-      }
+    }
 
     const getQuestionById = async (id) => {
         const response = await axios.get(`http://localhost:5000/queueoverflow/questions/${id}`);
@@ -51,13 +50,15 @@ const QuestionFocus = (props) => {
                 position: 'relative',
                 height: getHeight(height),
                 width: "80%",
-                marginTop: "80px",
+                marginTop: "100px",
                 alignItems:'center',
                 justifyContent:'center',
                 marginLeft: "10%",
                 marginRight: "10%",
             }}>
-                <Question {...question} />
+                { question.id &&
+                    <BigQuestion {...question} />
+                }
             </div>
         </div>
     )

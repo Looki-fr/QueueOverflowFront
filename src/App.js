@@ -5,12 +5,12 @@ import Home from "./components/Home";
 import { ChakraProvider } from '@chakra-ui/react'
 import UserList from "./components/User/UserList";
 import QuestionFocus from "./components/Questions/QuestionFocus";
-/* <Route path="/" element={<ProductList/>}/>
-<Route path="/add" element={<AddProduct />}/>
-<Route path="/edit/:id" element={<EditProduct />}/> */
+import { useState } from 'react'
 
 
 function App() {
+  const [username, setUsername] = useState('');
+
   return (
     <ChakraProvider>
       <Router>
