@@ -132,6 +132,7 @@ const RepositoryCard = (props) => {
       {answers.map((answer) => (
         <Answer key={answer.AnswerID} {...answer} />
       ))}
+      <Box height={"30px"} />
     </div>
   );
 };

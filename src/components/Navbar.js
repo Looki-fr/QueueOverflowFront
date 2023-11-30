@@ -18,9 +18,10 @@ import {
   Icon
 } from '@chakra-ui/react';
 import { AiOutlineTeam, AiOutlineHome } from 'react-icons/ai';
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useContext, createContext, useState  } from 'react';
 import { BsFolder2, BsCalendarCheck } from 'react-icons/bs';
 import { Link } from "react-router-dom";
+import { UserContext } from "./../UserContext";
 
 const IconButton = () => {
   return (
@@ -38,8 +39,7 @@ const IconButton = () => {
 
 const NavItem = (props) => {
   const color = useColorModeValue('gray.600', 'gray.300');
-
-  const { icon, children } = props;
+  const { icon, children } = props; 
   return (
     <Flex
       align="center"
@@ -71,6 +71,7 @@ const NavItem = (props) => {
 };
 
 const Navbar = (props) => {
+    const user = useContext(UserContext);
     return (
     <Box
       py="2"
@@ -133,7 +134,7 @@ const Navbar = (props) => {
                 <Link href="https://dev.to/m_ahmad" _hover={{ textDecoration: 'none' }} isExternal>
                   <MenuItem backgroundColor={"#ededed"}>
                     <VStack justify="start" alignItems="left">
-                      <Text fontWeight="500">Name</Text>
+                      <Text fontWeight="500">{user!=='' ? user : "Name"}</Text>
                     </VStack>
                   </MenuItem>
                 </Link>
@@ -152,7 +153,9 @@ const Navbar = (props) => {
                 </MenuItem>
                 <MenuDivider />
                 <MenuItem backgroundColor={"#ededed"}>
-                  <Text fontWeight="500">Sign Out/In</Text>
+                  <Link to="/signin">
+                     <Text fontWeight="500">Sign Out/In</Text>
+                  </Link>
                 </MenuItem>
               </MenuList>
             </Menu>

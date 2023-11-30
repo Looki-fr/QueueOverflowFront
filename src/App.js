@@ -5,24 +5,31 @@ import Home from "./components/Home";
 import { ChakraProvider } from '@chakra-ui/react'
 import UserList from "./components/User/UserList";
 import QuestionFocus from "./components/Questions/QuestionFocus";
-import { useState } from 'react'
-
+import { useEffect, useState } from 'react'
+import SignIn from "./components/SignRegister/SignIn";
+import Register from "./components/SignRegister/Register";
+import ReactDOM from "react-dom/client";
+import { UserContext } from "./UserContext";
 
 function App() {
-  const [username, setUsername] = useState('');
+  const [user, setUser] = useState('');
 
   return (
-    <ChakraProvider>
-      <Router>
-        <Routes>
-          <Route path="/" element={<Home/>}/>
-          <Route path="/questions" element={<QuestionList/>}/>
-          <Route path="/users" element={<UserList/>}/>
-          <Route path="/exercise" element={<ExerciseList/>}/>
-          <Route path="/question" element={<QuestionFocus/>}/>
-        </Routes>
-      </Router>
-    </ChakraProvider>
+    <UserContext.Provider value={user}>
+      <ChakraProvider>
+        <Router>
+          <Routes>
+            <Route path="/" element={<Home/>}/>
+            <Route path="/questions" element={<QuestionList/>}/>
+            <Route path="/users" element={<UserList/>}/>
+            <Route path="/exercise" element={<ExerciseList/>}/>
+            <Route path="/question" element={<QuestionFocus/>}/>
+            <Route path="/signin" element={<SignIn setUser={setUser}/>}/>
+            <Route path="/register" element={<Register setUser={setUser}/>}/>
+          </Routes>
+        </Router>
+      </ChakraProvider>
+    </UserContext.Provider>
   );
 }
 
