@@ -22,6 +22,7 @@ import React, { ReactNode, useContext, createContext, useState  } from 'react';
 import { BsFolder2, BsCalendarCheck } from 'react-icons/bs';
 import { Link } from "react-router-dom";
 import { UserContext } from "./../UserContext";
+import { useNavigate  } from "react-router-dom";
 
 const IconButton = () => {
   return (
@@ -72,6 +73,12 @@ const NavItem = (props) => {
 
 const Navbar = (props) => {
     const user = useContext(UserContext);
+    const navigate = useNavigate()
+
+    function gotoAskQuestion() {  
+      navigate(`/askQuestion`)
+    }
+
     return (
     <Box
       py="2"
@@ -117,7 +124,7 @@ const Navbar = (props) => {
             <NavItem icon={BsCalendarCheck}>Your questions</NavItem>
           </Flex>
           <HStack spacing={3}>
-            <Button color="#fff" mr="30" rounded="md" bg="#FFA500" _hover={{ bg: '#FF7F50' }}>
+            <Button color="#fff" mr="30" rounded="md" bg="#FFA500" _hover={{ bg: '#FF7F50' }} onClick={gotoAskQuestion}>
               Ask a question
             </Button>
             <Menu isLazy>

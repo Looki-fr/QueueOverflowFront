@@ -37,7 +37,8 @@ const SimpleSignIn = (props) => {
       const response = await axios.get(`http://localhost:5000/queueoverflow/users/email/${email}`);
       if (response.data) {
         props.setUser(response.data.Username);
-        navigate("/");
+        // navigate to last page
+        navigate(-1);
       }
       else {
         console.log("User not found")
@@ -54,6 +55,10 @@ const SimpleSignIn = (props) => {
       }
     }
   }
+
+  useEffect(() => {
+    props.setUser("");
+  }, []);
 
   return (
     <Container maxW="7xl" p={{ base: 5, md: 10 }}>

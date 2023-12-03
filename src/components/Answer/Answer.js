@@ -4,13 +4,14 @@ import {
   HStack,
   Heading,
   Text,
-  Link,
   useColorModeValue,
   Flex,
   SimpleGrid,
   Container,
-  Icon
+  Icon,
+  Box
 } from '@chakra-ui/react';
+import { MdOutlineQuestionAnswer } from "react-icons/md";
 
 
 const FeaturedArticles = (props) => {
@@ -19,17 +20,13 @@ const FeaturedArticles = (props) => {
   if (props.Answer !== undefined)
     answers=props.Answer.split("\n");
 
-  var marginLeft=props.marginleft*"5";
-  if (props.marginleft > 10)
-    marginLeft=props.marginleft*"5";
   return (
     <Container 
-      maxW={100-marginLeft+"%"} 
+      maxW={"100%"} 
       margin={"0px"} 
       padding={"0px"}
       rounded="xl"
       marginTop={"15px"}
-      marginLeft={marginLeft+"%"}
       >
       <VStack align="start" spacing={8} width="100%">
         <SimpleGrid columns={1} spacing={4} w="100%">
@@ -43,11 +40,23 @@ const FeaturedArticles = (props) => {
               bg={'white'}
               align="left"
             >
-              <HStack justifyContent="space-between" isInline>
-                <Heading fontSize="xl" align="left" mt={0}>
+              <HStack justifyContent="space-between" width="100%">
+                <Heading fontSize="xl" align="left" mt={0}  width="100%">
+                  <Box
+                    display="flex"
+                    flexDirection={"row"} 
+                    justifyContent={"space-between"} 
+                    width="100%"
+                  >
+                      <Text fontWeight="550" marginBottom="10px" fontSize={"xl"}>
+                        {answers[0]}
+                      </Text>
+                      <Icon as={MdOutlineQuestionAnswer} boxSize="1.2em"/>
+
+                  </Box>
                   {
-                    answers.map((answer) => (
-                      <Text fontWeight="550" marginBottom="10px" fontSize={"lg"}>
+                    answers.slice(1, answers.lenght).map((answer) => (
+                      <Text fontWeight="550" marginBottom="10px" fontSize={"xl"}>
                         {answer}
                       </Text>
                     ))
@@ -60,10 +69,10 @@ const FeaturedArticles = (props) => {
                   justifyContent: "flex-end",
 
               }}>
-                <Text fontSize="md" fontWeight="600" color={textColor} marginRight="20px">
+                <Text fontSize="lg" fontWeight="600" color={textColor} marginRight="20px">
                   {props.Date}
                 </Text>
-                <Text fontSize="md" fontWeight="600" color={"orange"}>
+                <Text fontSize="lg" fontWeight="600" color={"orange"}>
                   {props.user}
                 </Text>
               </div>

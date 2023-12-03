@@ -253,7 +253,7 @@ const QuestionList = () => {
                   marginRight:"0px",
                   marginTop:"0px",
                 }}>
-                  Try another search or <Link style={{color:"#FF7F50"}}>
+                  Try another search or <Link to="/askQuestion" style={{color:"#FF7F50"}}>
                     ask it !
                   </Link>
                 </h1>

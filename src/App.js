@@ -10,6 +10,8 @@ import SignIn from "./components/SignRegister/SignIn";
 import Register from "./components/SignRegister/Register";
 import ReactDOM from "react-dom/client";
 import { UserContext } from "./UserContext";
+import Redirect from "./components/Redirect";
+import AskQuestion from "./components/Questions/AskQuestion";
 
 function App() {
   const [user, setUser] = useState('');
@@ -26,6 +28,8 @@ function App() {
             <Route path="/question" element={<QuestionFocus/>}/>
             <Route path="/signin" element={<SignIn setUser={setUser}/>}/>
             <Route path="/register" element={<Register setUser={setUser}/>}/>
+            <Route path="/askQuestion" element={<AskQuestion/>}/>
+            <Route path="*" element={<Redirect/>}/>
           </Routes>
         </Router>
       </ChakraProvider>
