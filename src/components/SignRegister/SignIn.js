@@ -26,6 +26,7 @@ const SimpleSignIn = (props) => {
   const emailRef = useRef(null);
   const [password, setPassword] = useState('');
   const passwordRef = useRef(null);
+  const [isValid, setIsValid] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -41,7 +42,7 @@ const SimpleSignIn = (props) => {
         navigate(-1);
       }
       else {
-        console.log("User not found")
+        setIsValid(false);
       }
     }
   }
@@ -59,6 +60,10 @@ const SimpleSignIn = (props) => {
   useEffect(() => {
     props.setUser("");
   }, []);
+
+  useEffect(() => {
+    setIsValid(true);
+  }, [email, password]);
 
   return (
     <Container maxW="7xl" p={{ base: 5, md: 10 }}>
@@ -81,6 +86,7 @@ const SimpleSignIn = (props) => {
               <FormControl id="email">
                 <FormLabel>Email</FormLabel>
                 <Input 
+                  isInvalid={!isValid}
                   rounded="md" 
                   type="email" 
                   value={email}
@@ -94,6 +100,7 @@ const SimpleSignIn = (props) => {
                 <FormLabel>Password</FormLabel>
                 <InputGroup size="md">
                   <Input 
+                    isInvalid={!isValid}
                     rounded="md" 
                     type={show ? 'text' : 'password'} 
                     value={password}

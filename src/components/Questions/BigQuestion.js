@@ -131,7 +131,9 @@ const RepositoryCard = (props) => {
       const lastQuestionAnswerID = await getLastQuestionAnswer();
       await createQuestionAnswer(lastQuestionAnswerID);
       await createAnswer(lastQuestionAnswerID+1, QuestionAnswerID);
-      navigate(0, { replace: true })
+      getAnswerByIsAnswering(id)
+      setCurrentFocus('question')
+      setCurrentAnswer('')
     }
     if (currentUser ===''){
       navigate("/signin")
