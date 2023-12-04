@@ -156,6 +156,8 @@ const RepositoryCard = (props) => {
           shadow: 'lg',
           textDecoration: 'none'
         }}
+        onClick={() => setCurrentFocus('question')}
+        cursor={"pointer"}
       >
         <VStack overflow="hidden" align="start" spacing={1}>
           <VStack spacing={1} align="start" w="100%">
@@ -224,7 +226,7 @@ const RepositoryCard = (props) => {
             marginTop="15px"
             color="white"
             size="lg"
-            onClick={() => submit()}
+            onClick={() => submit(id)}
           >Submit</Button>
         </Box>
       }
