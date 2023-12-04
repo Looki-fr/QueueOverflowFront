@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useContext } from 'react';
 import {
   Container,
   FormControl,
@@ -18,20 +18,25 @@ import {
 import { Link as LinkDom} from "react-router-dom";
 import axios from "axios";
 import { useNavigate } from 'react-router-dom';
+import { LastPageContext } from "./../../LastPageContext";
 
 const SimpleSignIn = (props) => {
   const [show, setShow] = useState(false);
   const handleClick = () => setShow(!show);
   const [email, setEmail] = useState('');
+  const [emailValid, setEmailValid] = useState(true);
   const emailRef = useRef(null);
   const [name, setName] = useState('');
+  const [nameValid, setNameValid] = useState(true);
   const nameRef = useRef(null);
   const [password, setPassword] = useState('');
+  const [passwordValid, setPasswordValid] = useState(true);
   const passwordRef = useRef(null);
   const [confirmPassword, setConfirmPassword] = useState('');
   const confirmPasswordRef = useRef(null);
   const navigate = useNavigate();
-  
+  const lastPage = useContext(LastPageContext);
+
   useEffect(() => {
     emailRef.current.focus();
   }, []);
@@ -63,21 +68,52 @@ const SimpleSignIn = (props) => {
   const getLastUserID = async () => {
     const response = await axios.get(`http://localhost:5000/queueoverflow/lastUser`);
     return response.data.UserID;    
-}
+} 
+
+  const getHashedPassword = async (password) => {
+    const response = await axios.get(`http://localhost:5000/queueoverflow/hashPassword/${password}`);
+    return response.data.hash;
+  }
 
   async function saveUser() {
     if (password !=='' && password === confirmPassword && email !== '' && name !== '') {
-      await axios.post('http://localhost:5000/queueoverflow/users',{
-        Email: email,
-        Username: name,
-        Age: 0,
-        CreatedAt: getDate(),
-        UserID: await getLastUserID()+1
-      });
-      props.setUser(name);
-      navigate("/");
+      const response = await axios.get(`http://localhost:5000/queueoverflow/users/email/${email}`);
+      if (!response.data) {
+        await axios.post('http://localhost:5000/queueoverflow/users',{
+            Email: email,
+            Username: name,
+            Age: 0,
+            CreatedAt: getDate(),
+            UserID: await getLastUserID()+1,
+            password: await getHashedPassword(password)
+          });
+          props.setUser(name);
+          navigate(lastPage)
+      } else {
+        setEmailValid(false);
+      }
+    } else if (name === '') {
+      setNameValid(false);
+    } else if (email === '') {
+      setEmailValid(false);
     }
   }
+
+  useEffect(() => {
+    setEmailValid(true);
+  }, [email]);
+
+  useEffect(() => {
+    if (password === confirmPassword)
+      setPasswordValid(true);
+    else {
+      setPasswordValid(false);
+    }
+  }, [password, confirmPassword]);
+  
+  useEffect(() => {
+    setNameValid(true);
+  }, [name]);
 
   return (
     <Container maxW="7xl" p={{ base: 5, md: 10 }}>
@@ -106,7 +142,14 @@ const SimpleSignIn = (props) => {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   onKeyDown={(e) => handleSearch(e, "email")}
+                  isInvalid={!emailValid}
                 />
+                {
+                  !emailValid && email!=='' ? <p style={{
+                    color: "red", 
+                    marginTop:"10px"
+                  }}>Email already exists</p> : null
+                }
               </FormControl>
               <FormControl id="name">
                 <FormLabel>Name</FormLabel>
@@ -117,6 +160,7 @@ const SimpleSignIn = (props) => {
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   onKeyDown={(e) => handleSearch(e, "name")}  
+                  isInvalid={!nameValid}
                 />
               </FormControl>
               <FormControl id="password">
@@ -128,6 +172,7 @@ const SimpleSignIn = (props) => {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   onKeyDown={(e) => handleSearch(e, "password")}
+                  isInvalid={!passwordValid}
                 />
               </FormControl>
               <FormControl id="confirmpassword">
@@ -140,7 +185,8 @@ const SimpleSignIn = (props) => {
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
                     onKeyDown={(e) => handleSearch(e, "password")}
-                  />
+                    isInvalid={!passwordValid}
+                    />
                   <InputRightElement width="4.5rem">
                     <Button
                       h="1.75rem"
@@ -161,7 +207,7 @@ const SimpleSignIn = (props) => {
             </VStack>
             <VStack w="100%">
               <Stack direction="row" justify="space-between" w="100%">
-                <Checkbox colorScheme="green" size="md">
+                <Checkbox colorScheme="green" size="md" defaultChecked={true}>
                   Remember me
                 </Checkbox>
                 <Link fontSize={{ base: 'md', sm: 'md' }}>Forgot password?</Link>

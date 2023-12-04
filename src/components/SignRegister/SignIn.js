@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useContext } from 'react';
 import {
   Container,
   FormControl,
@@ -18,6 +18,8 @@ import {
 import { Link as LinkDom} from "react-router-dom";
 import { useNavigate } from 'react-router-dom';
 import axios from "axios";
+import { LastPageContext } from "./../../LastPageContext";
+
 
 const SimpleSignIn = (props) => {
   const [show, setShow] = useState(false);
@@ -28,18 +30,23 @@ const SimpleSignIn = (props) => {
   const passwordRef = useRef(null);
   const [isValid, setIsValid] = useState(true);
   const navigate = useNavigate();
+  const lastPage = useContext(LastPageContext);
 
   useEffect(() => {
     emailRef.current.focus();
   }, []);
 
+  const comparePassword = async (password, hash) => {
+    const response = await axios.get(`http://localhost:5000/queueoverflow/checkPassword/${password}/${hash}`);
+    return response.data.result;
+  }
+
   async function submit() {
     if (email !== "" || password !== "") {
       const response = await axios.get(`http://localhost:5000/queueoverflow/users/email/${email}`);
-      if (response.data) {
+      if (response.data && await comparePassword(password, response.data.password)) {
         props.setUser(response.data.Username);
-        // navigate to last page
-        navigate(-1);
+        navigate(lastPage)
       }
       else {
         setIsValid(false);
@@ -127,7 +134,12 @@ const SimpleSignIn = (props) => {
             </VStack>
             <VStack w="100%">
               <Stack direction="row" justify="space-between" w="100%">
-                <Checkbox colorScheme="green" size="md">
+                <Checkbox 
+                  colorScheme="green" 
+                  size="md" 
+                  checked={true}
+                  defaultChecked={true}
+                >
                   Remember me
                 </Checkbox>
                 <Link fontSize={{ base: 'md', sm: 'md' }}>Forgot password?</Link>

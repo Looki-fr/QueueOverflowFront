@@ -28,7 +28,7 @@ function getHeight(height){
     return height-72;
   }
 
-const AskQuestion = () => {
+const AskQuestion = (props) => {
     const { height, width } = useWindowDimensions();
     const [title, setTitle] = useState('');
     const titleRef = useRef(null);
@@ -135,6 +135,10 @@ const AskQuestion = () => {
         const response = await axios.get(`http://localhost:5000/queueoverflow/lastQuestion`);
         return response.data.QuestionID;
     }
+
+    useEffect(() => {
+        props.setLastPage("/askQuestion");
+    }, []);
 
     useEffect(() => {
         if (title !== '') {

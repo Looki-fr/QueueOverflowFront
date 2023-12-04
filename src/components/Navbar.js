@@ -155,11 +155,11 @@ const Navbar = (props) => {
                   <Text fontWeight="500">Preferences</Text>
                 </MenuItem>
                 <MenuDivider />
-                <MenuItem backgroundColor={"#ededed"}>
-                  <Link to="/signin">
-                     <Text fontWeight="500">Sign Out/In</Text>
-                  </Link>
-                </MenuItem>
+                <Link to="/signin">
+                  <MenuItem backgroundColor={"#ededed"}>
+                      <Text fontWeight="500">Sign Out/In</Text>
+                  </MenuItem>
+                </Link>
               </MenuList>
             </Menu>
           </HStack>

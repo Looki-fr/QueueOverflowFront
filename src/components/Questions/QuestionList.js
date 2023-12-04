@@ -13,7 +13,7 @@ function getHeight(height){
   return height-72;
 }
 
-const QuestionList = () => {
+const QuestionList = (props) => {
     const [questions, setQuestions] = useState([]);
     const [searchValue, setSearchValue] = useState('');
     const [loaded, setLoaded] = useState(false);
@@ -27,6 +27,7 @@ const QuestionList = () => {
         const description = urlParams.get('search')
         setSearchValue(description || "")
         getQuestions(description || "");
+        props.setLastPage(description ? `/questions?search=${description}` : "/questions");
     }, []);
 
     const completeQuestion = async (response) => {
@@ -68,6 +69,7 @@ const QuestionList = () => {
       if (key.keyCode === 13) {
         if (getQuestions!=null){
           getQuestions(searchValue);
+          props.setLastPage(`/questions?search=${searchValue}`);
         }
       }
     }  

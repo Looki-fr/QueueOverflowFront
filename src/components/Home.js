@@ -14,7 +14,7 @@ function getMarginLeft(width){
     return width/2-width/4;
 }
 
-const Home = () => {
+const Home = (props) => {
     const navigate = useNavigate();
     const [searchValue, setSearchValue] = useState('');
 
@@ -41,6 +41,10 @@ const Home = () => {
         setSelectedOption(value);
         setIsOpen(false);
     };
+
+    useEffect(() => {
+        props.setLastPage("/home");
+    }, []);
 
     return (
         <div>

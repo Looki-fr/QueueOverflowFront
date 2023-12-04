@@ -18,6 +18,7 @@ const QuestionFocus = (props) => {
         const urlParams = new URLSearchParams(queryString);
         const id = urlParams.get('id')
         getQuestionById(id);
+        props.setLastPage(`/question?id=${id}`);
     }, []);
 
     const completeQuestion = async (q) => {
