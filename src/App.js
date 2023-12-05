@@ -10,6 +10,8 @@ import { UserContext } from "./UserContext";
 import { LastPageContext } from "./LastPageContext";
 import Redirect from "./components/Redirect";
 import AskQuestion from "./components/Questions/AskQuestion";
+import ExerciseList from "./components/Exercise/ExerciseList";
+import ExerciseFocus from "./components/Exercise/ExerciseFocus";
 
 function App() {
   const [user, setUser] = useState('');
@@ -28,6 +30,8 @@ function App() {
               <Route path="/register" element={<Register setUser={setUser} setLastPage={setLastPage}/>}/>
               <Route path="/askQuestion" element={<AskQuestion setLastPage={setLastPage}/>}/>
               <Route path="*" element={<Redirect setLastPage={setLastPage}/>}/>
+              <Route path="/exercises" element={<ExerciseList setLastPage={setLastPage}/>}/>
+              <Route path="/exercise" element={<ExerciseFocus setLastPage={setLastPage}/>}/>
             </Routes>
           </Router>
         </ChakraProvider>

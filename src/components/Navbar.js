@@ -115,8 +115,10 @@ const Navbar = (props) => {
             <Link to="/questions">
               <NavItem icon={AiOutlineHome}>Questions</NavItem>
             </Link>
-            <NavItem icon={AiOutlineTeam}>Users</NavItem>
-            <NavItem icon={BsFolder2}>Exercises</NavItem>
+              <NavItem icon={AiOutlineTeam}>Users</NavItem>
+            <Link to="/exercises">
+              <NavItem icon={BsFolder2}>Exercises</NavItem>
+            </Link>
             <NavItem icon={BsCalendarCheck}>Your questions</NavItem>
           </Flex>
           <HStack spacing={3}>

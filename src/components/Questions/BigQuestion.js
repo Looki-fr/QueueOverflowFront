@@ -40,7 +40,7 @@ const RepositoryCard = (props) => {
 
   const returnAnswerByIsAnswering = async (id, cpt) => {
     let lst=[];
-    const response = await axios.get(`http://localhost:5000/queueoverflow/answers/isAnswering/${id}`);
+    const response = await axios.get(`http://localhost:5000/queueoverflow/answers/isAnswering/${id}/answer`);
     for (let i = 0; i < response.data.length; i++) {
       const addInfo = await getQuestionAnswerById(response.data[i].QuestionAnswerID);
       const user = await getUserById(addInfo.UserID);

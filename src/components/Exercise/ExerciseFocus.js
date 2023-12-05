@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import axios from "axios";
-import BigQuestion from './BigQuestion';
+import BigExercise from './BigExercise';
 import Navbar from "./../Navbar";
 import { useWindowDimensions } from './../getWindowDimensions'
 
@@ -8,8 +8,8 @@ function getHeight(height){
     return height-72;
   }
   
-const QuestionFocus = (props) => {
-    const [question, setQuestion] = useState({});
+const ExerciseFocus = (props) => {
+    const [exercise, setExercise] = useState({});
     
     useEffect(() => {
         // get parameter from url
@@ -17,23 +17,17 @@ const QuestionFocus = (props) => {
         const urlParams = new URLSearchParams(queryString);
         const id = urlParams.get('id')
         getQuestionById(id);
-        props.setLastPage(`/question?id=${id}`);
+        props.setLastPage(`/exercise?id=${id}`);
     }, []);
 
-    const completeQuestion = async (q) => {
-        const addInfo = await getQuestionAnswerById(q.QuestionAnswerID);
-        const user = await getUserById(addInfo.UserID);
-        setQuestion({ id:q.QuestionAnswerID,question:q.Title, description:q.Description,tag:q.Tag, date : addInfo.Date, user : user.Username})
+    const completeExercise = async (e) => {
+        const user = await getUserById(e.UserID);
+        setExercise({ exerciseID:e.ExerciseID,codeAnswer:e.CodeAnswer, description:e.Description,tag:e.Tag, date : e.Date, user : user.Username})
     }
 
     const getQuestionById = async (id) => {
-        const response = await axios.get(`http://localhost:5000/queueoverflow/questions/${id}`);
-        completeQuestion(response.data);
-    }
-
-    const getQuestionAnswerById = async (id) => {
-        const response = await axios.get(`http://localhost:5000/queueoverflow/questionAnswers/${id}`);
-        return response.data;    
+        const response = await axios.get(`http://localhost:5000/queueoverflow/exercises/${id}`);
+        completeExercise(response.data);
     }
 
     const getUserById = async (id) => {
@@ -56,12 +50,12 @@ const QuestionFocus = (props) => {
                 marginLeft: "10%",
                 marginRight: "10%",
             }}>
-                { question.id &&
-                    <BigQuestion {...question} />
+                { exercise.exerciseID &&
+                    <BigExercise {...exercise} />
                 }
             </div>
         </div>
     )
 }
 
-export default QuestionFocus;
+export default ExerciseFocus  ;
