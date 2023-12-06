@@ -3,6 +3,7 @@ import axios from "axios";
 import BigExercise from './BigExercise';
 import Navbar from "./../Navbar";
 import { useWindowDimensions } from './../getWindowDimensions'
+import { useNavigate  } from "react-router-dom";
 
 function getHeight(height){
     return height-72;
@@ -10,13 +11,14 @@ function getHeight(height){
   
 const ExerciseFocus = (props) => {
     const [exercise, setExercise] = useState({});
+    const navigate = useNavigate()
     
     useEffect(() => {
         // get parameter from url
         const queryString = window.location.search;
         const urlParams = new URLSearchParams(queryString);
         const id = urlParams.get('id')
-        getQuestionById(id);
+        getExerciseByID(id);
         props.setLastPage(`/exercise?id=${id}`);
     }, []);
 
@@ -25,8 +27,11 @@ const ExerciseFocus = (props) => {
         setExercise({ exerciseID:e.ExerciseID,codeAnswer:e.CodeAnswer, description:e.Description,tag:e.Tag, date : e.Date, user : user.Username})
     }
 
-    const getQuestionById = async (id) => {
+    const getExerciseByID = async (id) => {
         const response = await axios.get(`http://localhost:5000/queueoverflow/exercises/${id}`);
+        if (!response.data){
+            navigate("/exercises")
+        }
         completeExercise(response.data);
     }
 

@@ -8,6 +8,7 @@ import { Input, useColorModeValue, Image, Button, Text, Icon } from '@chakra-ui/
 import { FaArrowDownShortWide } from "react-icons/fa6";
 import { FaArrowDownWideShort } from "react-icons/fa6";
 import { BsSearch } from "react-icons/bs";
+import { useNavigate  } from "react-router-dom";
 
 function getWidth(width){
     if (width > 800){
@@ -39,6 +40,7 @@ const ExerciseList = (props) => {
   const [loaded, setLoaded] = useState(false);
   const [selectedFilter, setSelectedFilter] = useState("Dates");
   const [order, setOrder] = useState("Ascending");
+  const navigate = useNavigate()
 
   useEffect(() => {
     // get parameter from url
@@ -191,6 +193,21 @@ const ExerciseList = (props) => {
               color={order==="Descending" ? "black" : "grey"}
             />
           </div>
+          <Button
+            margin={"0px"} 
+            alignSelf={"center"} 
+            height={"45px"} 
+            fontSize={{ base: '12px', md: '16px', lg: '18px' }} 
+            color="#fff" 
+            mr="30" 
+            rounded="md" 
+            bg="#FFA500" 
+            _hover={{ bg: '#FF7F50' }}
+            onClick={()=>navigate("/postExercise")}
+            marginLeft={"30px"}
+            >
+              Post an exercise
+          </Button>
 
         </div>
         {
@@ -239,8 +256,8 @@ const ExerciseList = (props) => {
                 marginRight:"0px",
                 marginTop:"0px",
               }}>
-                Try another search or <Link to="/askQuestion" style={{color:"#FF7F50"}}>
-                  ask it !
+                Try another search or <Link to="/postExercise" style={{color:"#FF7F50"}}>
+                  Post one !
                 </Link>
               </h1>
 

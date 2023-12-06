@@ -12,6 +12,8 @@ import Redirect from "./components/Redirect";
 import AskQuestion from "./components/Questions/AskQuestion";
 import ExerciseList from "./components/Exercise/ExerciseList";
 import ExerciseFocus from "./components/Exercise/ExerciseFocus";
+import PostExercise from "./components/Exercise/PostExercise";
+import {ExerciseRedirect}from "./components/Exercise/ExerciseRedirect";
 
 function App() {
   const [user, setUser] = useState('');
@@ -32,6 +34,8 @@ function App() {
               <Route path="*" element={<Redirect setLastPage={setLastPage}/>}/>
               <Route path="/exercises" element={<ExerciseList setLastPage={setLastPage}/>}/>
               <Route path="/exercise" element={<ExerciseFocus setLastPage={setLastPage}/>}/>
+              <Route path="/postExercise" element={<PostExercise setLastPage={setLastPage}/>}/>
+              <Route path="/exerciseLink" element={<ExerciseRedirect setLastPage={setLastPage}/>}/>
             </Routes>
           </Router>
         </ChakraProvider>

@@ -147,9 +147,11 @@ const Navbar = (props) => {
                 <MenuItem backgroundColor={"#ededed"}>
                   <Text fontWeight="500">Profil</Text>
                 </MenuItem>
-                <MenuItem backgroundColor={"#ededed"}>
-                  <Text fontWeight="500">Ask a question</Text>
-                </MenuItem>
+                <Link to="/askQuestion">
+                  <MenuItem backgroundColor={"#ededed"}>
+                    <Text fontWeight="500">Ask a question</Text>
+                  </MenuItem>
+                </Link>
                 <MenuItem backgroundColor={"#ededed"}>
                   <Text fontWeight="500">History</Text>
                 </MenuItem>

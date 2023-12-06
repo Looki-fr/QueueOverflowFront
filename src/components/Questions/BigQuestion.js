@@ -118,6 +118,7 @@ const RepositoryCard = (props) => {
       QuestionAnswerID: QuestionAnswerID,
       Answer: currentAnswer,
       isAnswering: isAnswering,
+      Type:"answer"
     });
   }
   

@@ -193,16 +193,34 @@ const RepositoryCard = (props) => {
               alignItems="center"
               marginTop="10px"
             >
-              <Button
-                  bg="#FFA500"
-                  _hover={{ bg: '#FF7F50' }}
-                  rounded="md"
-                  color="white"
-                  size="lg"
-                  onClick={() => setShow(!show)}
-                >
-                  Show code
-              </Button>
+              <Box>
+                <Button
+                    bg="#FFA500"
+                    _hover={{ bg: '#FF7F50' }}
+                    rounded="md"
+                    color="white"
+                    size="lg"
+                    onClick={() => setShow(!show)}
+                  >
+                    Show code
+                </Button>
+                  {
+                    show && (
+                      <Button
+                    bg="#FFA500"
+                    _hover={{ bg: '#FF7F50' }}
+                    rounded="md"
+                    color="white"
+                    size="lg"
+                    marginLeft="15px"
+                    onClick={() => {navigator.clipboard.writeText(codeAnswer)}}
+                  >
+                    Copy code
+                  </Button>
+                    )
+                    
+                  }
+              </Box>
               <Flex flexDirection="row">
                 <Box>
                   <HStack spacing="1">
