@@ -140,7 +140,7 @@ const RepositoryCard = (props) => {
       } else {
         setValidAnswer(true)
       }
-      if (validAnswer && currentUser !== '') {
+      if (currentAnswer!=='' && validAnswer && currentUser !== '') {
         const lastQuestionAnswerID = await getLastQuestionAnswer();
         await createQuestionAnswer(lastQuestionAnswerID);
         await createAnswer(lastQuestionAnswerID+1, QuestionAnswerID, type);

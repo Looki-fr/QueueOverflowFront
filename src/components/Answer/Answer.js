@@ -32,7 +32,7 @@ const FeaturedArticles = (props) => {
           <Text fontWeight="550" fontSize={"xl"}>
             {answer.substring(0, ind1)}
           </Text>
-          <Link to={`/exerciseLink?id=${lstStringBetween[1]}`}>
+          <Link to={`/exerciseLink?id=${lstStringBetween[1]}`} >
             <ChakraLink fontWeight="550" fontSize={"xl"} color="orange" marginLeft="5px" marginRight="5px">
               {lstStringBetween[0]}
             </ChakraLink>
