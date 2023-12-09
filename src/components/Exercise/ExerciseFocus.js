@@ -19,7 +19,7 @@ const ExerciseFocus = (props) => {
         const urlParams = new URLSearchParams(queryString);
         const id = urlParams.get('id')
         getExerciseByID(id);
-        props.setLastPage(`/exercise?id=${id}`);
+        props.setLastPage(`/exerciseLink?id=${id}`);
     }, []);
 
     const completeExercise = async (e) => {

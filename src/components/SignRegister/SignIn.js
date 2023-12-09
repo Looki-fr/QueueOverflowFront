@@ -46,6 +46,7 @@ const SimpleSignIn = (props) => {
       const response = await axios.get(`http://localhost:5000/queueoverflow/users/email/${email}`);
       if (response.data && await comparePassword(password, response.data.password)) {
         props.setUser(response.data.Username);
+        await axios.post(`http://localhost:5000/queueoverflow/login`, {id: response.data.UserID});
         navigate(lastPage)
       }
       else {

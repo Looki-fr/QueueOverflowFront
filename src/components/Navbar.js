@@ -119,7 +119,9 @@ const Navbar = (props) => {
             <Link to="/exercises">
               <NavItem icon={BsFolder2}>Exercises</NavItem>
             </Link>
-            <NavItem icon={BsCalendarCheck}>Your questions</NavItem>
+            <Link to="/yourQuestions">
+              <NavItem icon={BsCalendarCheck}>Your questions</NavItem>
+            </Link>
           </Flex>
           <HStack spacing={3}>
             <Button color="#fff" mr="30" rounded="md" bg="#FFA500" _hover={{ bg: '#FF7F50' }} onClick={gotoAskQuestion}>
@@ -139,7 +141,7 @@ const Navbar = (props) => {
                 <Link href="https://dev.to/m_ahmad" _hover={{ textDecoration: 'none' }} isExternal>
                   <MenuItem backgroundColor={"#ededed"}>
                     <VStack justify="start" alignItems="left">
-                      <Text fontWeight="500">{user!=='' ? user : "Name"}</Text>
+                    <Text fontWeight="500">{user ? user : "Name"}</Text>
                     </VStack>
                   </MenuItem>
                 </Link>
