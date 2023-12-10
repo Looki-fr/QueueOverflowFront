@@ -335,7 +335,7 @@ const RepositoryCard = (props) => {
           <Textarea 
             isInvalid={!validAnswer}
             size="lg" 
-            placeholder="Enter the description of your problem" 
+            placeholder="Enter your answer" 
             rounded="md" 
             marginTop="15px"
             value={currentAnswer}
@@ -375,7 +375,7 @@ const RepositoryCard = (props) => {
               <Textarea 
                 isInvalid={!validAnswer}
                 size="lg" 
-                placeholder="Enter the description of your problem" 
+                placeholder="Enter your answer" 
                 rounded="md" 
                 value={currentAnswer}
                 bgColor={bgTextArea}
