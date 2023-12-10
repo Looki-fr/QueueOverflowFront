@@ -20,6 +20,7 @@ import { useNavigate } from "react-router-dom";
 import Answer from './../Answer/Answer';
 import axios from "axios";
 import { UserContext } from "./../../UserContext";
+import { useWindowDimensions } from './../getWindowDimensions'
 
 const RepositoryCard = (props) => {
   const { id, question, description, tag, user, date } = props;
@@ -141,6 +142,7 @@ const RepositoryCard = (props) => {
       navigate("/signin")
     }
   }
+  const { height, width } = useWindowDimensions();
 
   const bgTextArea = useColorModeValue('gray.100', 'gray.800')
   return (
@@ -168,8 +170,8 @@ const RepositoryCard = (props) => {
               width="100%"
             >
               <HStack>
-                  <Icon as={MdQuestionAnswer} boxSize="1.5em" mt="1px" marginTop="19px" alignSelf={"flex-start"}/>
-                  <Text fontSize="4xl" noOfLines={3} fontWeight="600" align="left" marginLeft="10px">
+                  <Icon as={MdQuestionAnswer} boxSize="1.5em" mt="1px" marginTop={width>700?"19px":"10px" }alignSelf={"flex-start"}/>
+                  <Text fontSize={width>700?"4xl":"3xl"} noOfLines={3} fontWeight="600" align="left" marginLeft="10px">
                     {question}
                   </Text>
               </HStack>
@@ -185,13 +187,13 @@ const RepositoryCard = (props) => {
                 </Box>
                 <Box>
                   <HStack spacing="1" marginLeft="15px">
-                    <Text fontSize={'lg'} fontWeight={"550"} color={"gray.500"}>Asked the </Text>
+                    {width>700 && (<Text fontSize={'lg'} fontWeight={"550"} color={"gray.500"}>Asked the </Text>)}
                     <Text fontSize={'lg'} fontWeight={"550"} color={"gray.500"}>{date}</Text>
                   </HStack>
                 </Box>
                 <Box>
                   <HStack spacing="1" marginLeft={"8px"}>
-                    <Text fontSize={'lg'} fontWeight={"550"} color={"gray.500"}>by</Text>
+                  {width>700 && (<Text fontSize={'lg'} fontWeight={"550"} color={"gray.500"}>by</Text>)}
                     <Text fontSize={'lg'} fontWeight={"550"} color={"gray.500"}>{user}</Text>
                   </HStack>
                 </Box>
@@ -199,7 +201,7 @@ const RepositoryCard = (props) => {
             )}
           </VStack>
           <Box marginTop="15px">
-            <Text color="black.500" fontSize="2xl" noOfLines={2} textAlign="left" marginTop={"5px"}>
+            <Text color="black.500" fontSize={width>700?"2xl":"xl"} noOfLines={10} textAlign="left" marginTop={"5px"}>
               {description}
             </Text>
           </Box>
@@ -220,6 +222,7 @@ const RepositoryCard = (props) => {
             bgColor={bgTextArea}
             onChange={(e) => writing(e.target.value)}
             marginRight="15px"
+            minH={width>700?"90px":"200px"}
           />
           <Button
             bg="#FFA500" 
@@ -258,6 +261,7 @@ const RepositoryCard = (props) => {
                 bgColor={bgTextArea}
                 onChange={(e) => writing(e.target.value)}
                 marginRight="15px"
+                minH={width>700?"90px":"200px"}
               />
               <Button
                 bg="#FFA500" 

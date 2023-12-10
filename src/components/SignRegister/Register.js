@@ -19,6 +19,7 @@ import { Link as LinkDom} from "react-router-dom";
 import axios from "axios";
 import { useNavigate } from 'react-router-dom';
 import { LastPageContext } from "./../../LastPageContext";
+import { useWindowDimensions } from './../getWindowDimensions'
 
 const SimpleSignIn = (props) => {
   const [show, setShow] = useState(false);
@@ -36,6 +37,7 @@ const SimpleSignIn = (props) => {
   const confirmPasswordRef = useRef(null);
   const navigate = useNavigate();
   const lastPage = useContext(LastPageContext);
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   useEffect(() => {
     emailRef.current.focus();
@@ -76,7 +78,7 @@ const SimpleSignIn = (props) => {
   }
 
   async function saveUser() {
-    if (password !=='' && password === confirmPassword && email !== '' && name !== '') {
+    if (password !=='' && password === confirmPassword && email !== '' && name !== '' && emailRegex.test(email)) {
       const response = await axios.get(`http://localhost:5000/queueoverflow/users/email/${email}`);
       if (!response.data) {
         await axios.post('http://localhost:5000/queueoverflow/users',{
@@ -85,7 +87,8 @@ const SimpleSignIn = (props) => {
             Age: 0,
             CreatedAt: getDate(),
             UserID: await getLastUserID()+1,
-            password: await getHashedPassword(password)
+            password: await getHashedPassword(password),
+            doneExercise:''
           });
           props.setUser(name);
           navigate(lastPage)
@@ -94,7 +97,7 @@ const SimpleSignIn = (props) => {
       }
     } else if (name === '') {
       setNameValid(false);
-    } else if (email === '') {
+    } else if (email === '' || !emailRegex.test(email)) {
       setEmailValid(false);
     }
   }
@@ -114,6 +117,7 @@ const SimpleSignIn = (props) => {
   useEffect(() => {
     setNameValid(true);
   }, [name]);
+  const { height, width } = useWindowDimensions();
 
   return (
     <Container maxW="7xl" p={{ base: 5, md: 10 }}>
@@ -145,10 +149,16 @@ const SimpleSignIn = (props) => {
                   isInvalid={!emailValid}
                 />
                 {
-                  !emailValid && email!=='' ? <p style={{
+                  !emailValid && email!=='' && emailRegex.test(email)? <p style={{
                     color: "red", 
                     marginTop:"10px"
                   }}>Email already exists</p> : null
+                }
+                {
+                  !emailValid && email!=='' && !emailRegex.test(email)? <p style={{
+                    color: "red", 
+                    marginTop:"10px"
+                  }}>Email is not valid</p> : null
                 }
               </FormControl>
               <FormControl id="name">
@@ -233,6 +243,23 @@ const SimpleSignIn = (props) => {
           </Stack>
         </Stack>
       </Center>
+      { width < 1000 && (
+        <Button
+          bg="green.300"
+          color="white"
+          _hover={{
+            bg: 'green.500'
+          }}
+          rounded="md"
+          w="100%"
+          alignSelf="center"
+          onClick={() => navigate(lastPage)}
+          justifySelf={"center"}
+          marginTop={"10px"}
+          >Go back
+          </Button>
+      )
+      }
     </Container>
   );
 };

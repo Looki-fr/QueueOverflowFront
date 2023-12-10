@@ -123,49 +123,66 @@ const QuestionList = (props) => {
             marginLeft:"10px",
             alignItems:'center',
             display: "flex",
-            flexDirection: "row",
+            flexDirection: width>700 ? "row" : "column",
           }}>
-            <Input
-              height={"50px"}
-              marginRight={"25px"}
-              marginTop={"0px"}
-              maxW="40%"
-              placeholder="Search..."
-              borderColor={useColorModeValue('black.300', 'white')}
-              borderRadius="30px"
-              value={searchValue}
-              onChange={(e) => setSearchValue(e.target.value)}
-              onKeyDown={(e) => {handleSearch(e)}}
-              fontSize={{ base: '12px', md: '16px', lg: '18px' }}
-              marginBottom={"0px"}
-              zIndex={"0"}
-            />
-            <div onClick={() => getQuestions(searchValue)} style={{
-              marginRight:"30px",
-              paddingTop:"5px",
+            <div style={{
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+              marginRight:width>700 ? "25px" : "0px",
+              marginTop:width>700 ? "0px" : "25px",
+              width:"100%"
             }}>
-              <Icon
-                as={BsSearch}
-                cursor="pointer"
-                w={"30px"}
-                h={"30px"}
-              />
+              <Input
+                height={"50px"}
+                marginRight={"25px"}
+                marginTop={"0px"}
+                maxW= {width>700 ? width*0.4: "90%"}
+                placeholder="Search..."
+                borderColor={useColorModeValue('black.300', 'white')}
+                borderRadius="30px"
+                value={searchValue}
+                onChange={(e) => setSearchValue(e.target.value)}
+                onKeyDown={(e) => {handleSearch(e)}}
+                fontSize={"20px"}
+                marginBottom={"0px"}
+                zIndex={"0"}
+              />  
+              <div onClick={() => getQuestions(searchValue)} style={{
+                  paddingTop:"5px",
+                }}>
+                  <Icon
+                    as={BsSearch}
+                    cursor="pointer"
+                    w={"30px"}
+                    h={"30px"}
+                  />
+              </div>
             </div>
-            <Button 
-                margin={"0px"} 
-                alignSelf={"center"} 
-                height={"45px"} 
-                fontSize={{ base: '12px', md: '16px', lg: '18px' }} 
-                color="#fff" 
-                mr="30" 
-                rounded="md" 
-                bg="#FFA500" 
-                _hover={{ bg: '#FF7F50' }}
-                onClick={()=>sortQuestions()}
-                >
-              Filter
-            </Button>
-            <div onClick={() => setSelectedFilter("Dates")} style={{
+            <div style={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "center",
+              alignItems: "center",
+              marginRight:width>700 ? "25px" : "0px",
+              marginTop:width>700 ? "0px" : "25px"
+            }}>
+              
+              <Button 
+                  margin={"0px"} 
+                  alignSelf={"center"} 
+                  height={"45px"} 
+                  fontSize={width>700 ? "20px" : "15px"}
+                  color="#fff" 
+                  mr="30" 
+                  rounded="md" 
+                  bg="#FFA500" 
+                  _hover={{ bg: '#FF7F50' }}
+                  onClick={()=>sortQuestions()}
+                  >
+                Filter
+              </Button>
+              <div onClick={() => setSelectedFilter("Dates")} style={{
               marginRight:"30px"
             }}>
               <Text 
@@ -207,6 +224,8 @@ const QuestionList = (props) => {
                 color={order==="Descending" ? "black" : "grey"}
               />
             </div>
+            </div>
+            
 
           </div>
           {
@@ -232,8 +251,8 @@ const QuestionList = (props) => {
                 <Image
                   src={require("../../assets/no_questions.gif")}
                   alt="No questions found"
-                  width="50%"
-                  height="50%"
+                  width={width>700?"50%":"100%"}
+                  height={width>700?"50%":"100%"}
                 />
                 <h1 style={{
                   fontSize: "24px",
@@ -247,7 +266,7 @@ const QuestionList = (props) => {
                   No questions found
                 </h1>
                 <h1 style={{
-                  fontSize: "24px",
+                  fontSize: width>700?"24px":"23px",
                   fontWeight: "500",
                   textAlign: "center",
                   marginBottom: "15px",

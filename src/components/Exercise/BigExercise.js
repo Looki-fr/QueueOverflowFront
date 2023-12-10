@@ -20,9 +20,13 @@ import Answer from './../Answer/Answer';
 import axios from "axios";
 import { UserContext } from "./../../UserContext";
 import { TbDeviceDesktopQuestion } from "react-icons/tb";
+import { MdRemoveDone } from "react-icons/md";
+import { IoMdDoneAll } from "react-icons/io";
+import { useWindowDimensions } from './../getWindowDimensions'
 
 const RepositoryCard = (props) => {
-    const { exerciseID, date, description, codeAnswer, user, tag } = props;
+    const { exerciseID, date, description, codeAnswer, user, tag, done } = props;
+    const [Done, setDone] = useState(done);
     const [show, setShow] = useState(false);
     const [currentAnswer, setCurrentAnswer] = useState('');
     const [validAnswer, setValidAnswer] = useState(true);
@@ -30,14 +34,24 @@ const RepositoryCard = (props) => {
     const currentUser = useContext(UserContext);
     const [answers, setAnswers] = useState([]);
     const navigate = useNavigate();
+    const { height, width } = useWindowDimensions();
   
     var codeAnswers=[];
     if (codeAnswer !== undefined)
       codeAnswers=codeAnswer.split("\n");
 
+    async function getDone(){
+      if (currentUser !== '') {
+        const u = await getUserFull();
+        return u.doneExercise.split(',').includes(exerciseID.toString());
+      }
+      return false;
+    }
+
     useEffect(() => {
       getAnswerByIsAnswering(exerciseID);
-    }, []);
+      getDone().then((res) => setDone(res));
+    }, [navigate]);
 
     const getAnswerByIsAnswering = async (id) => {
         setAnswers(await returnAnswerByIsAnswering(id, 0));
@@ -134,6 +148,38 @@ const RepositoryCard = (props) => {
       return response.data.QuestionAnswerID;    
     }
 
+    const getUserFull= async () => {
+      const response = await axios.get(`http://localhost:5000/queueoverflow/usersByName/${currentUser}`);
+      return response.data;
+  }
+
+    async function setDoneExercise(){
+      if (currentUser && currentUser !== '') {
+        setDone(prev => !prev)
+        const u = await getUserFull();
+        let doneExercise=""
+        if (!Done){
+          doneExercise = u.doneExercise + "," + exerciseID;
+        }
+        else{
+          let lst = u.doneExercise.split(",");
+          for (let i = 0; i < lst.length; i++) {
+            if (lst[i] !== exerciseID.toString()){
+              doneExercise = doneExercise + "," + lst[i];
+            }
+          }
+        }
+        if (doneExercise[0] === ','){
+          doneExercise = doneExercise.substring(1);
+        }
+        await axios.patch(`http://localhost:5000/queueoverflow/users/updateExerciseDone/${u.UserID}`, {
+          doneExercise: doneExercise,
+          })
+      } else {
+        navigate("/signin")
+      }
+    }
+
     async function submit(QuestionAnswerID, type){
       if (currentAnswer === '') {
         setValidAnswer(false)
@@ -154,6 +200,8 @@ const RepositoryCard = (props) => {
     }
 
     const bgTextArea = useColorModeValue('gray.100', 'gray.800')
+
+    
 
   return (
     <div>
@@ -180,20 +228,20 @@ const RepositoryCard = (props) => {
               width="100%"
             >
               <HStack>
-                  <Icon as={TbDeviceDesktopQuestion} boxSize="1.5em" mt="1px" marginTop="19px" alignSelf={"flex-start"} justifySelf={"flex-start"}/>
-                  <Text fontSize="4xl" noOfLines={3} fontWeight="600" align="left" marginLeft="10px">
+                  {width>700&&(<Icon as={TbDeviceDesktopQuestion} boxSize="1.5em" mt="1px" marginTop={width>700?"19px":"10px" } alignSelf={"flex-start"} justifySelf={"flex-start"}/>)}
+                  <Text fontSize={width>700?"4xl":"2xl"} fontWeight={width>700?"600":"500"} align="left" marginLeft="10px">
                     {description}
                   </Text>
               </HStack>
             </Flex>
             <Flex 
               width="100%" 
-              flexDirection="row" 
+              flexDirection={width>700?"row":"column"}
               justifyContent="space-between"
               alignItems="center"
-              marginTop="10px"
+              marginTop="20px"
             >
-              <Box>
+              <Box display={"flex"} flexDirection={"row"}>
                 <Button
                     bg="#FFA500"
                     _hover={{ bg: '#FF7F50' }}
@@ -202,7 +250,7 @@ const RepositoryCard = (props) => {
                     size="lg"
                     onClick={() => setShow(!show)}
                   >
-                    Show code
+                    {width>700?"Show code":"Show"}
                 </Button>
                   {
                     show && (
@@ -215,13 +263,34 @@ const RepositoryCard = (props) => {
                     marginLeft="15px"
                     onClick={() => {navigator.clipboard.writeText(codeAnswer)}}
                   >
-                    Copy code
+                    {width>700?"Copy code":"Copy"}
                   </Button>
                     )
                     
                   }
+                  {
+                    show && Done && (
+                      <Box 
+                        onClick={() => setDoneExercise()}
+                      >
+                        <Icon as={MdRemoveDone} boxSize="2em"marginLeft="15px" mt="1px" marginTop="8px" alignSelf={"flex-start"} justifySelf={"flex-start"}
+                          color="grey"
+                          _hover={{color:"black"}}
+                        />
+                      </Box>
+                    )
+                  }
+                  {
+                    show && !Done && (
+                      <Box onClick={() => setDoneExercise()}>
+                        <Icon as={IoMdDoneAll} boxSize="2em" marginLeft="15px" mt="1px" marginTop="8px" alignSelf={"flex-start"} justifySelf={"flex-start"}
+                        color="grey"
+                        _hover={{color:"black"}}/>
+                      </Box>
+                    )
+                  }
               </Box>
-              <Flex flexDirection="row">
+              <Flex flexDirection="row" marginTop={width>700?"0":"20px"} alignSelf={"flex-end"}>
                 <Box>
                   <HStack spacing="1">
                     <Tag size="sm" colorScheme="orange" marginTop="3px">
@@ -231,13 +300,13 @@ const RepositoryCard = (props) => {
                 </Box>
                 <Box>
                   <HStack spacing="1" marginLeft="15px">
-                    <Text fontSize={'lg'} fontWeight={"550"} color={"gray.500"}>Asked the </Text>
+                    {width>700 && (<Text fontSize={'lg'} fontWeight={"550"} color={"gray.500"}>Asked the </Text>)}
                     <Text fontSize={'lg'} fontWeight={"550"} color={"gray.500"}>{date}</Text>
                   </HStack>
                 </Box>
                 <Box>
                   <HStack spacing="1" marginLeft={"8px"}>
-                    <Text fontSize={'lg'} fontWeight={"550"} color={"gray.500"}>by</Text>
+                    {width>700 && (<Text fontSize={'lg'} fontWeight={"550"} color={"gray.500"}>by</Text>)}
                     <Text fontSize={'lg'} fontWeight={"550"} color={"gray.500"}>{user}</Text>
                   </HStack>
                 </Box>
@@ -248,7 +317,7 @@ const RepositoryCard = (props) => {
             <Box marginTop="15px" marginLeft="30px">
             {
               codeAnswers.map((ca) => (
-                <Text color="black.500" fontSize="2xl" noOfLines={2} textAlign="left" marginTop={"5px"}>
+                <Text color="black.500" fontSize={width>700?"2xl":"xl"} textAlign="left" marginTop={"5px"}>
                   {ca}
               </Text>
               ))
@@ -273,6 +342,7 @@ const RepositoryCard = (props) => {
             bgColor={bgTextArea}
             onChange={(e) => writing(e.target.value)}
             marginRight="15px"
+            minH={width>700?"90px":"200px"}
           />
           <Button
             bg="#FFA500" 
@@ -311,6 +381,7 @@ const RepositoryCard = (props) => {
                 bgColor={bgTextArea}
                 onChange={(e) => writing(e.target.value)}
                 marginRight="15px"
+                minH={width>700?"90px":"200px"}
               />
               <Button
                 bg="#FFA500" 

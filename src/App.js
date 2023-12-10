@@ -21,10 +21,6 @@ function App() {
   const [user, setUser] = useState('');
   const [lastPage, setLastPage] = useState('/home');
 
-  useEffect(() => {
-    console.log(lastPage)
-  }, [lastPage]);
-
   // async function initUser() {
   //   await axios.get(`http://localhost:5000/queueoverflow/currentUserId`)
   //   .then((response) => {

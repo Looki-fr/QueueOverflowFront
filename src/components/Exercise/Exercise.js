@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react'
-
+import { IoMdDoneAll } from "react-icons/io";
 import {
   Box,
   useColorModeValue,
@@ -18,8 +18,7 @@ import { useNavigate } from "react-router-dom";
 import { MotionBox } from './../Questions/motion';
 
 const RepositoryCard = (props) => {
-  const { id, date, description, codeAnswer, user, tag } = props;
-
+  const { id, date, description, codeAnswer, user, tag, doneEx } = props;
   const handleLinkClick = (e, link) => {
     window.open(link);
     e.stopPropagation();
@@ -60,7 +59,7 @@ const RepositoryCard = (props) => {
                   <Tooltip hasArrow label="Click to see answers" placement="top">
                     <HStack cursor="pointer">
                       <Icon as={TbDeviceDesktopQuestion} boxSize="1.2em" mt="13px" justifySelf={"flex-start"} alignSelf={"flex-start"}/>
-                      <Text fontSize="30px" fontWeight="600" align="left">
+                      <Text fontSize="30px" fontWeight="600" align="left" noOfLines={"3"}>
                         {description}
                       </Text>
                     </HStack>
@@ -70,7 +69,7 @@ const RepositoryCard = (props) => {
                 <Flex width="100%" flexDirection="row">
                   <Box>
                     <HStack spacing="1">
-                      <Tag size="sm" colorScheme="orange">
+                      <Tag size="sm" colorScheme="orange" mt="2px">
                         <Text fontSize={'1rem'}>{tag}</Text>
                       </Tag>
                     </HStack>
@@ -85,6 +84,12 @@ const RepositoryCard = (props) => {
                       <Text fontSize={'1rem'} fontWeight={"550"}>{user}</Text>
                     </HStack>
                   </Box>
+                  { doneEx && (
+                      <Box>
+                        <Icon as={IoMdDoneAll } boxSize="1.2em" marginLeft="15px" mt="3px" justifySelf={"flex-start"} alignSelf={"flex-start"}/>
+                      </Box>
+                    )
+                  }
                 </Flex>
             </VStack>
           </VStack>

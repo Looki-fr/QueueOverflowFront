@@ -155,19 +155,19 @@ const AskQuestion = (props) => {
             <div style={{
             position: 'relative',
             height: getHeight(height),
-            width: "80%",
+            width: width>700?"80%":"100%",
             marginTop: "80px",
             alignItems:'center',
             justifyContent:'center',
-            marginLeft: "10%",
-            marginRight: "10%",
+            marginLeft: width>700?"10%":"0%",
+            marginRight:width>700?"10%":"0%",
             }}>
                 {
                     user && (
                         <Container maxW="7xl" py={10} px={{ base: 5, md: 8 }}>
                             <Stack spacing={10}>
                                 <Flex align="center" justify="center" direction="column">
-                                <Heading fontSize="5xl" mb={2}>
+                                <Heading fontSize={width>700?"5xl":"4xl"} mb={2}>
                                     Post an exercise
                                 </Heading>
                                 <Text fontSize="xl" textAlign="center">

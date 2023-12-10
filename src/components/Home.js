@@ -3,17 +3,20 @@ import axios from "axios";
 import { Link, useNavigate  } from "react-router-dom";
 import { useWindowDimensions } from './getWindowDimensions'
 import Navbar from "./Navbar";
-import { Input, useColorModeValue, Image } from '@chakra-ui/react';
+import { Input, useColorModeValue, Image, Text, Icon } from '@chakra-ui/react';
 import {DropDownContainer, DropDownHeader, DropDownListContainer, DropDownList, ListItem, options} from './DropDown'
+import { BsSearch } from "react-icons/bs";
 
 function getMarginTop(height){
     return height/2-50 - height/6;
 }
 
 function getMarginLeft(width){
+    if (width>1000) {
     return width/2-width/4;
+    }
+    return width/2-width/2.5;
 }
-
 const Home = (props) => {
     const navigate = useNavigate();
     const [searchValue, setSearchValue] = useState('');
@@ -22,10 +25,10 @@ const Home = (props) => {
         if (key.keyCode === 13) {
             if (selectedOption === "Questions") {
                 navigate(`/questions?search=${searchValue}`)
-            } else if (selectedOption === "Users") {
-                navigate(`/users?search=${searchValue}`)
+            } else if (selectedOption === "Your Questions") {
+                navigate(`/yourQuestions?search=${searchValue}`)
             } else if (selectedOption === "Exercises") {
-                navigate(`/exercise?search=${searchValue}`)
+                navigate(`/exercises?search=${searchValue}`)
             }
         }
     }    
@@ -61,59 +64,81 @@ const Home = (props) => {
                     marginLeft: getMarginLeft(width),
                     marginRight: getMarginLeft(width),
                 }}>
-                    <h1 style={{
-                        fontSize: "54px",
-                        fontWeight: "630",
-                        textAlign: "center",
-                        marginBottom: "30px",
-                        marginLeft:"0px",
-                        marginRight:"0px",
-                        marginTop:"0px",
-                    
-                    }}>
+
+                    <Text
+                        fontSize={width>700 ? "6xl" : "4xl"}
+                        fontWeight="bold"
+                        color={useColorModeValue('black', 'white')}
+                        textAlign="center"
+                    >
                         Queue Overflow
-                    </h1>
+                    </Text>
+                    
                     <div style={{
                         display: "flex",
-                        flexDirection: "row",
+                        flexDirection: width>700 ? "row" : "column",
                         justifyContent: "flex-start",
-                        alignItems: "flex-start",
+                        alignItems: width>700?"flex-start":"center",
                     }}>
-                        <Input
-                            justifySelf={"center"}
-                            height={"50px"}
-                            maxW="100%"
-                            placeholder="Search..."
-                            borderColor={useColorModeValue('black.300', 'white')}
-                            borderRadius="30px"
-                            value={searchValue}
-                            onChange={(e) => setSearchValue(e.target.value)}
-                            onKeyDown={(e) => {handleSearch(e)}}
-                            fontWeight={"500"}
-                            fontSize={"20px"}
-                            paddingLeft={"30px"}
-                            paddingRight={"30px"}
-                            paddingBottom={"10px"}
-                            paddingTop={"10px"}
-                            marginRight={"20px"}
-                        />
-                        <DropDownContainer>
-                            <DropDownHeader onClick={toggling}>
-                                {selectedOption}
-                                <Image src={require("../assets/down-arrow.png")} alt="down-arrow" width="15px" height="15px" style={{marginLeft:"10px",marginTop:"11px"}}/>
-                            </DropDownHeader>
-                            {isOpen && (
-                            <DropDownListContainer>
-                                <DropDownList>
-                                {options.map(option => (
-                                    <ListItem onClick={onOptionClicked(option)} key={Math.random()}>
-                                    {option}
-                                    </ListItem>
-                                ))}
-                                </DropDownList>
-                            </DropDownListContainer>
+                        <div style={{
+                            display: "flex",
+                            flexDirection: "row",
+                            marginRight:width>700?"20px":"0px",
+                            marginTop:width>700 ? "0px" : "50px",
+                            width: "100%",
+                        }}>
+                            <Input
+                                height={"50px"}
+                                maxW="100%"
+                                placeholder="Search..."
+                                borderColor={useColorModeValue('black.300', 'white')}
+                                borderRadius="30px"
+                                value={searchValue}
+                                onChange={(e) => setSearchValue(e.target.value)}
+                                onKeyDown={(e) => {handleSearch(e)}}
+                                fontWeight={"500"}
+                                fontSize={"20px"}
+                                paddingLeft={"30px"}
+                                paddingRight={"30px"}
+                                paddingBottom={"10px"}
+                                paddingTop={"10px"}
+                            />
+                            {width<=700 && (
+                                <div onClick={() => handleSearch({keyCode:13})} style={{
+                                    paddingTop:"5px",
+                                    marginLeft:"10px",
+                                    marginTop:"5px",
+                                    }}>
+                                    <Icon
+                                        as={BsSearch}
+                                        cursor="pointer"
+                                        w={"30px"}
+                                        h={"30px"}
+                                    />
+                                </div>
                             )}
-                        </DropDownContainer>
+                        </div>
+                        <div style={{
+                            marginTop: width>700 ? "0px" : "50px",
+                        }}>
+                            <DropDownContainer>
+                                <DropDownHeader onClick={toggling}>
+                                    {selectedOption}
+                                    <Image src={require("../assets/down-arrow.png")} alt="down-arrow" width="15px" height="15px" style={{marginLeft:"10px",marginTop:"11px"}}/>
+                                </DropDownHeader>
+                                {isOpen && (
+                                <DropDownListContainer>
+                                    <DropDownList>
+                                    {options.map(option => (
+                                        <ListItem onClick={onOptionClicked(option)} key={Math.random()}>
+                                        {option}
+                                        </ListItem>
+                                    ))}
+                                    </DropDownList>
+                                </DropDownListContainer>
+                                )}
+                            </DropDownContainer>
+                        </div>
                     </div>
                 </div>
             </div>

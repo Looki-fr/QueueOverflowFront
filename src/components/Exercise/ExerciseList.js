@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import Navbar from "./../Navbar";
 import axios from "axios";
 import { Link } from "react-router-dom";
@@ -9,6 +9,7 @@ import { FaArrowDownShortWide } from "react-icons/fa6";
 import { FaArrowDownWideShort } from "react-icons/fa6";
 import { BsSearch } from "react-icons/bs";
 import { useNavigate  } from "react-router-dom";
+import { UserContext } from "./../../UserContext";
 
 function getWidth(width){
     if (width > 800){
@@ -41,6 +42,7 @@ const ExerciseList = (props) => {
   const [selectedFilter, setSelectedFilter] = useState("Dates");
   const [order, setOrder] = useState("Ascending");
   const navigate = useNavigate()
+  const user = useContext(UserContext);
 
   useEffect(() => {
     // get parameter from url
@@ -49,18 +51,31 @@ const ExerciseList = (props) => {
     const description = urlParams.get('search')
     setSearchValue(description || "")
     getExercises(description || "");
-  }, []);
+  }, [navigate]);
 
   const getUserById = async (id) => { 
     const response = await axios.get(`http://localhost:5000/queueoverflow/users/${id}`);
     return response.data;
   }
 
+  const getUserFull= async () => {
+    const response = await axios.get(`http://localhost:5000/queueoverflow/usersByName/${user}`);
+    return response.data;
+}
+
   const completeExercise = async (response) => {
+    
+    let listOfExercises = [];
+    if (user!==''){
+      const currentUserFull= await getUserFull();
+      listOfExercises = currentUserFull.doneExercise.split(',');
+    }
     let lst = [];
+
     for (let i = 0; i < response.data.length; i++){
       const user = await getUserById(response.data[i].UserID);
-      lst.push({ ...response.data[i], user : user.Username})
+      const doneEx=listOfExercises.includes(response.data[i].ExerciseID.toString())
+      lst.push({ ...response.data[i], doneEx:doneEx, user : user.Username})
     }
     setExercises(lst);
     setLoaded(true);
@@ -90,11 +105,21 @@ const ExerciseList = (props) => {
 
   function sortExercises(){
     const lst = exercises.splice(0)
-    if (order==="Ascending"){
-      lst.sort((a, b) => (a.Date > b.Date) ? 1 : -1)
+    if (selectedFilter==="Dates"){
+      if (order==="Ascending"){
+        lst.sort((a, b) => (a.Date > b.Date) ? 1 : -1)
+      }
+      else{
+        lst.sort((a, b) => (a.Date < b.Date) ? 1 : -1)
+      }
     }
     else{
-      lst.sort((a, b) => (a.Date < b.Date) ? 1 : -1)
+      if (order==="Ascending"){
+        lst.sort((a, b) => (a.doneEx > b.doneEx) ? 1 : -1)
+      }
+      else{
+        lst.sort((a, b) => (a.doneEx < b.doneEx) ? 1 : -1)
+      }
     }
     setExercises(lst);
   }
@@ -119,39 +144,55 @@ const ExerciseList = (props) => {
           marginLeft:"10px",
           alignItems:'center',
           display: "flex",
-          flexDirection: "row",
+          flexDirection: width>700 ? "row" : "column",
         }}>
-          <Input
-            height={"50px"}
-            marginRight={"25px"}
-            marginTop={"0px"}
-            maxW="40%"
-            placeholder="Search..."
-            borderColor={useColorModeValue('black.300', 'white')}
-            borderRadius="30px"
-            value={searchValue}
-            onChange={(e) => setSearchValue(e.target.value)}
-            onKeyDown={(e) => {handleSearch(e)}}
-            fontSize={{ base: '12px', md: '16px', lg: '18px' }}
-            marginBottom={"0px"}
-            zIndex={"0"}
-          />
-          <div onClick={() => getExercises(searchValue)} style={{
-            marginRight:"30px",
-            paddingTop:"5px",
-          }}>
-            <Icon
-              as={BsSearch}
-              cursor="pointer"
-              w={"30px"}
-              h={"30px"}
+          <div style={{
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+              marginRight:width>700 ? "25px" : "0px",
+              marginTop:width>700 ? "0px" : "25px",
+              width:"100%"
+            }}>
+            <Input
+              height={"50px"}
+              marginRight={"25px"}
+              marginTop={"0px"}
+              maxW= {width>700 ? width*0.4: "90%"}
+              placeholder="Search..."
+              borderColor={useColorModeValue('black.300', 'white')}
+              borderRadius="30px"
+              value={searchValue}
+              onChange={(e) => setSearchValue(e.target.value)}
+              onKeyDown={(e) => {handleSearch(e)}}
+              fontSize={"20px"}
+              marginBottom={"0px"}
+              zIndex={"0"}
             />
+            <div onClick={() => getExercises(searchValue)} style={{
+              paddingTop:"5px",
+            }}>
+              <Icon
+                as={BsSearch}
+                cursor="pointer"
+                w={"30px"}
+                h={"30px"}
+              />
           </div>
+        </div>
+        <div style={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "center",
+              alignItems: "center",
+              marginRight:width>700 ? "25px" : "0px",
+              marginTop:width>700 ? "0px" : "25px"
+            }}>
           <Button 
               margin={"0px"} 
               alignSelf={"center"} 
               height={"45px"} 
-              fontSize={{ base: '12px', md: '16px', lg: '18px' }} 
+              fontSize={width>700 ? "20px" : "15px"}
               color="#fff" 
               mr="30" 
               rounded="md" 
@@ -170,6 +211,16 @@ const ExerciseList = (props) => {
               color={selectedFilter==="Dates" ? "black" : "grey"} 
               fontWeight={"500"}
             >Dates</Text>
+          </div>
+          <div onClick={() => setSelectedFilter("Done")} style={{
+            marginRight:"30px"
+          }}>
+            <Text 
+              cursor={"pointer"} 
+              fontSize={"20px"} 
+              color={selectedFilter==="Done" ? "black" : "grey"} 
+              fontWeight={"500"}
+            >Done</Text>
           </div>
           <div onClick={() => setOrder("Ascending")} 
             style={{
@@ -193,26 +244,31 @@ const ExerciseList = (props) => {
               color={order==="Descending" ? "black" : "grey"}
             />
           </div>
-          <Button
-            margin={"0px"} 
-            alignSelf={"center"} 
-            height={"45px"} 
-            fontSize={{ base: '12px', md: '16px', lg: '18px' }} 
-            color="#fff" 
-            mr="30" 
-            rounded="md" 
-            bg="#FFA500" 
-            _hover={{ bg: '#FF7F50' }}
-            onClick={()=>navigate("/postExercise")}
-            marginLeft={"30px"}
-            >
-              Post an exercise
-          </Button>
+        </div>
+        { width>700 && (
+            <Button
+              margin={"0px"} 
+              alignSelf={"center"} 
+              height={"45px"} 
+              fontSize={width>700 ? "20px" : "15px"}
+              color="#fff" 
+              mr="30" 
+              rounded="md" 
+              bg="#FFA500" 
+              _hover={{ bg: '#FF7F50' }}
+              p={"12"}
+              paddingTop="6"
+              paddingBottom="6"
+              onClick={()=>navigate("/postExercise")}
+              >
+                Post an exercise
+            </Button>
+        )}
 
         </div>
         {
             exercises.map((question) => (
-                <Exercise key={question.ExerciseID} tag = {question.Tag} id={question.ExerciseID} description={question.Description} user={question.user} date={question.Date} />
+                <Exercise key={question.ExerciseID} tag = {question.Tag} id={question.ExerciseID} description={question.Description} user={question.user} date={question.Date} doneEx={question.doneEx}/>
             ))
         }
         {
@@ -233,8 +289,8 @@ const ExerciseList = (props) => {
               <Image
                 src={require("../../assets/no_questions.gif")}
                 alt="No exercises found"
-                width="50%"
-                height="50%"
+                width={width>700?"50%":"100%"}
+                height={width>700?"50%":"100%"}
               />
               <h1 style={{
                 fontSize: "24px",
@@ -248,7 +304,7 @@ const ExerciseList = (props) => {
                 No exercises found
               </h1>
               <h1 style={{
-                fontSize: "24px",
+                fontSize: width>700?"24px":"23px",
                 fontWeight: "500",
                 textAlign: "center",
                 marginBottom: "15px",

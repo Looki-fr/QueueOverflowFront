@@ -19,6 +19,7 @@ import { Link as LinkDom} from "react-router-dom";
 import { useNavigate } from 'react-router-dom';
 import axios from "axios";
 import { LastPageContext } from "./../../LastPageContext";
+import { useWindowDimensions } from './../getWindowDimensions'
 
 
 const SimpleSignIn = (props) => {
@@ -46,7 +47,7 @@ const SimpleSignIn = (props) => {
       const response = await axios.get(`http://localhost:5000/queueoverflow/users/email/${email}`);
       if (response.data && await comparePassword(password, response.data.password)) {
         props.setUser(response.data.Username);
-        await axios.post(`http://localhost:5000/queueoverflow/login`, {id: response.data.UserID});
+        // await axios.post(`http://localhost:5000/queueoverflow/login`, {id: response.data.UserID});
         navigate(lastPage)
       }
       else {
@@ -72,9 +73,10 @@ const SimpleSignIn = (props) => {
   useEffect(() => {
     setIsValid(true);
   }, [email, password]);
+  const { height, width } = useWindowDimensions();
 
   return (
-    <Container maxW="7xl" p={{ base: 5, md: 10 }}>
+    <Container maxW="7xl" p={{ base: 5, md: 10 }} marginTop={width>1000 ? "0px" : "100px"}>
       <Center>
         <Stack spacing={4}>
           <Stack align="center">
@@ -166,6 +168,23 @@ const SimpleSignIn = (props) => {
           </Stack>
         </Stack>
       </Center>
+      { width < 1000 && (
+        <Button
+          bg="green.300"
+          color="white"
+          _hover={{
+            bg: 'green.500'
+          }}
+          rounded="md"
+          w="100%"
+          alignSelf="center"
+          onClick={() => navigate(lastPage)}
+          justifySelf={"center"}
+          marginTop={"40px"}
+          >Go back
+          </Button>
+      )
+      }
     </Container>
   );
 };

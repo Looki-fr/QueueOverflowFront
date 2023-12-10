@@ -9,7 +9,6 @@ export const DropDownHeader = styled("div")`
   flex-direction: row;
   justify-content: space-between;
   width: 14.5 em;
-  margin-bottom: 0.8em;
   padding: 0.4em 1em 0.4em 1em;
   font-weight: 500;
   font-size: 1.3rem;
@@ -46,4 +45,4 @@ export const ListItem = styled("li")`
   }`;
 
 
-export const options = ["Questions", "Exercises", "Users"];
+export const options = ["Questions", "Exercises", "Your Questions"];

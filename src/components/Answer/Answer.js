@@ -14,11 +14,13 @@ import {
 } from '@chakra-ui/react';
 import { MdOutlineQuestionAnswer } from "react-icons/md";
 import { Link } from 'react-router-dom';
+import { useWindowDimensions } from './../getWindowDimensions'
 
 
 const FeaturedArticles = (props) => {
   const textColor = useColorModeValue('gray.500', 'gray.200');
   var answers=[];
+  const { height, width } = useWindowDimensions();
   if (props.Answer !== undefined)
     answers=props.Answer.split("\n");
 
@@ -28,24 +30,20 @@ const FeaturedArticles = (props) => {
     const lstStringBetween = answer.substring(ind1+3, ind2).split(";");
     if (ind1 !== -1 && ind2 !== -1 && lstStringBetween.length === 2 && !isNaN(lstStringBetween[1])){
       return (
-        <Box marginBottom="10px" display={"flex"} >
-          <Text fontWeight="550" fontSize={"xl"}>
-            {answer.substring(0, ind1)}
-          </Text>
+        <Text fontWeight="550" fontSize={"xl"}>
+          {answer.substring(0, ind1)}
           <Link to={`/exerciseLink?id=${lstStringBetween[1]}`} >
             <ChakraLink fontWeight="550" fontSize={"xl"} color="orange" marginLeft="5px" marginRight="5px">
               {lstStringBetween[0]}
             </ChakraLink>
           </Link>
-          <Text fontWeight="550" fontSize={"xl"}>
-            {answer.substring(ind2+3, answer.length)}
-          </Text>
-        </Box>
+          {answer.substring(ind2+3, answer.length)}
+        </Text>
       )
     }
     else{
       return (
-        <Text fontWeight="550" marginBottom="10px" fontSize={"xl"}>
+        <Text fontWeight={width>700?"550":"450"} marginBottom="10px" fontSize={"xl"}>
           {answer}
         </Text>
       )

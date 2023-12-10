@@ -17,12 +17,14 @@ import {
   useColorModeValue,
   Icon
 } from '@chakra-ui/react';
+import { useWindowDimensions } from './getWindowDimensions'
 import { AiOutlineTeam, AiOutlineHome } from 'react-icons/ai';
 import React, { ReactNode, useContext, createContext, useState  } from 'react';
 import { BsFolder2, BsCalendarCheck } from 'react-icons/bs';
 import { Link } from "react-router-dom";
 import { UserContext } from "./../UserContext";
 import { useNavigate  } from "react-router-dom";
+import { IoArrowBackOutline } from "react-icons/io5";
 
 const IconButton = () => {
   return (
@@ -74,6 +76,7 @@ const NavItem = (props) => {
 const Navbar = (props) => {
     const user = useContext(UserContext);
     const navigate = useNavigate()
+    const { height, width } = useWindowDimensions();
 
     function gotoAskQuestion() {  
       navigate(`/askQuestion`)
@@ -112,21 +115,32 @@ const Navbar = (props) => {
             color="gray.600"
             aria-label="Main Navigation"
           >
-            <Link to="/questions">
-              <NavItem icon={AiOutlineHome}>Questions</NavItem>
-            </Link>
-              <NavItem icon={AiOutlineTeam}>Users</NavItem>
-            <Link to="/exercises">
-              <NavItem icon={BsFolder2}>Exercises</NavItem>
-            </Link>
-            <Link to="/yourQuestions">
-              <NavItem icon={BsCalendarCheck}>Your questions</NavItem>
-            </Link>
+            { width>800 && (
+              <Link to="/questions">
+                <NavItem icon={AiOutlineHome}>Questions</NavItem>
+              </Link>
+              )
+            }
+            { width>800 && (
+              <Link to="/exercises">
+                <NavItem icon={BsFolder2}>Exercises</NavItem>
+              </Link>
+              )
+            }
+            { width>800 && (
+              <Link to="/yourQuestions">
+                <NavItem icon={BsCalendarCheck}>Your questions</NavItem>
+              </Link>
+              )
+            }
           </Flex>
           <HStack spacing={3}>
+          { width>800 && (
             <Button color="#fff" mr="30" rounded="md" bg="#FFA500" _hover={{ bg: '#FF7F50' }} onClick={gotoAskQuestion}>
               Ask a question
             </Button>
+            )
+          }
             <Menu isLazy>
               <MenuButton as={Button} size="sm" px={0} py={0} rounded="full" backgroundColor={"#ededed"}>
                 <Avatar size="sm" src={'https://avatars2.githubusercontent.com/u/37842853?v=4'} />
@@ -146,20 +160,26 @@ const Navbar = (props) => {
                   </MenuItem>
                 </Link>
                 <MenuDivider />
-                <MenuItem backgroundColor={"#ededed"}>
-                  <Text fontWeight="500">Profil</Text>
-                </MenuItem>
+                <Link to="/yourQuestions">
+                  <MenuItem backgroundColor={"#ededed"}>
+                    <Text fontWeight="500">Your Questions</Text>
+                  </MenuItem>
+                </Link>
                 <Link to="/askQuestion">
                   <MenuItem backgroundColor={"#ededed"}>
                     <Text fontWeight="500">Ask a question</Text>
                   </MenuItem>
                 </Link>
-                <MenuItem backgroundColor={"#ededed"}>
-                  <Text fontWeight="500">History</Text>
-                </MenuItem>
-                <MenuItem backgroundColor={"#ededed"}>
-                  <Text fontWeight="500">Preferences</Text>
-                </MenuItem>
+                <Link to="/exercises">
+                  <MenuItem backgroundColor={"#ededed"}>
+                    <Text fontWeight="500">Exercises</Text>
+                  </MenuItem>
+                </Link>
+                <Link to="/postExercise">
+                  <MenuItem backgroundColor={"#ededed"}>
+                    <Text fontWeight="500">Post an exercise</Text>
+                  </MenuItem>
+                </Link>
                 <MenuDivider />
                 <Link to="/signin">
                   <MenuItem backgroundColor={"#ededed"}>

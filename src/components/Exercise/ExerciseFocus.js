@@ -1,9 +1,10 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect,useContext } from 'react'
 import axios from "axios";
 import BigExercise from './BigExercise';
 import Navbar from "./../Navbar";
 import { useWindowDimensions } from './../getWindowDimensions'
 import { useNavigate  } from "react-router-dom";
+import { UserContext } from "./../../UserContext";
 
 function getHeight(height){
     return height-72;
@@ -12,6 +13,7 @@ function getHeight(height){
 const ExerciseFocus = (props) => {
     const [exercise, setExercise] = useState({});
     const navigate = useNavigate()
+    const {currentUser} = useContext(UserContext);
     
     useEffect(() => {
         // get parameter from url
@@ -22,9 +24,19 @@ const ExerciseFocus = (props) => {
         props.setLastPage(`/exerciseLink?id=${id}`);
     }, []);
 
+    const getUserFull= async () => {
+        const response = await axios.get(`http://localhost:5000/queueoverflow/usersByName/${currentUser}`);
+        return response.data;
+    }
+
     const completeExercise = async (e) => {
+        let listOfExercises = [];
+        if (currentUser && currentUser!==''){
+            const currentUserFull= await getUserFull();
+            listOfExercises = currentUserFull.doneExercise.split(',');
+        }    
         const user = await getUserById(e.UserID);
-        setExercise({ exerciseID:e.ExerciseID,codeAnswer:e.CodeAnswer, description:e.Description,tag:e.Tag, date : e.Date, user : user.Username})
+        setExercise({ exerciseID:e.ExerciseID,codeAnswer:e.CodeAnswer, description:e.Description,tag:e.Tag, date : e.Date, user : user.Username, done:listOfExercises.includes(e.ExerciseID)})
     }
 
     const getExerciseByID = async (id) => {
