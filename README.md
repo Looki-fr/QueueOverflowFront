@@ -30,13 +30,11 @@ Go into the folder using a terminal (in windows you can simply go into this fold
 
 git clone https://github.com/Looki-fr/QueueOverflowBack.git \
 cd QueueOverflowBack \
-git checkout master 
 
 5) Then execute those commands to download the front end 
 
 git clone https://github.com/Looki-fr/QueueOverflowFront.git \
 cd QueueOverflowFront\
-git checkout master\
 npm i
 
 6) Running the backend 
